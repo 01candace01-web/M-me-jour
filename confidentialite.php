@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Confidentialité et mentions légales | Même Jour</title>
+<style>
+:root{--bg:#1c1a38;--card:#2a2750;--tx:#f1e9d6;--mut:#aaa5cc;--gold:#e8b86b;--line:#413d73;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.65 system-ui,sans-serif}
+main{max-width:720px;margin:0 auto;padding:40px 20px 80px}
+h1{font:800 clamp(1.9rem,6vw,2.6rem)/1.15 Georgia,serif;margin:0 0 8px}
+h2{font:700 1.3rem/1.3 Georgia,serif;color:var(--gold);margin:34px 0 8px}
+p,li{margin:0 0 10px}ul{padding-left:20px}
+a{color:var(--gold)}
+.mut{color:var(--mut);font-size:.92rem}
+.todo{background:#e8b86b22;border:1px dashed var(--gold);border-radius:6px;padding:0 5px}
+</style>
+</head>
+<body>
+<main>
+<p><a href="index.php">Retour au site</a></p>
+<h1>Confidentialité et mentions légales</h1>
+<p class="mut">Dernière mise à jour : <span class="todo">[À COMPLÉTER : date]</span></p>
+
+<h2>Qui est responsable du site ?</h2>
+<p><span class="todo">[À COMPLÉTER : ton nom ou le nom de ta structure]</span>, basé à <span class="todo">[ville, Bénin]</span>.<br>
+Contact pour toute question ou demande : <span class="todo">[À COMPLÉTER : adresse e-mail]</span>.</p>
+
+<h2>Ce que fait ce site</h2>
+<p>Même Jour est un service de divertissement. Les horoscopes, les signes, l'ascendant et les textes qui accompagnent ta date de naissance ne sont pas des prévisions scientifiques et ne remplacent aucun conseil médical, juridique, financier ou personnel.</p>
+
+<h2>Les informations que tu saisis pour calculer ton jour</h2>
+<ul>
+ <li><b>Date et heure de naissance :</b> elles sont utilisées directement dans ton navigateur pour faire les calculs. Elles ne sont pas envoyées à nos serveurs, sauf si tu t'inscris (voir plus bas).</li>
+ <li><b>Ville de naissance :</b> son nom est envoyé au service de géolocalisation Open-Meteo pour trouver ses coordonnées et son fuseau horaire.</li>
+ <li><b>Jour et mois de naissance :</b> ils sont envoyés à Wikipédia (Wikimedia) pour afficher les événements et les personnalités de ce jour.</li>
+</ul>
+
+<h2>Mémorisation sur ton appareil</h2>
+<p>Si tu laisses cochée la case « Se souvenir de moi », ta date, ton heure et ta ville de naissance sont gardées <b>dans ton navigateur uniquement</b> (stockage local), pour t'éviter de les ressaisir. Elles ne sont pas envoyées à nos serveurs. Le bouton « Oublier mes données » les efface, ainsi que ton pseudo de chat.</p>
+
+<h2>Le chat par date</h2>
+<ul>
+ <li>Chaque jour de naissance a son salon de discussion. <b>Les messages sont publics</b> : toute personne qui ouvre le salon peut les lire.</li>
+ <li>Nous enregistrons ton pseudo, ton message et l'heure d'envoi. Utilise un pseudo, pas ton nom, et ne partage pas d'informations personnelles (téléphone, adresse, etc.).</li>
+ <li>Les liens sont interdits. Chaque message peut être signalé, et l'administrateur peut masquer ou supprimer tout contenu inapproprié.</li>
+ <li>Pour demander la suppression d'un de tes messages, écris à l'adresse de contact.</li>
+</ul>
+
+<h2>Protection contre les abus</h2>
+<p>Pour limiter le spam, le site calcule une empreinte chiffrée (hachage) de ton adresse IP lors d'un envoi (message, inscription, signalement). Ton adresse IP elle-même n'est pas conservée, et cette empreinte est effacée automatiquement après 24 heures.</p>
+
+<h2>Statistiques de visite</h2>
+<p>À chaque calcul, le site enregistre uniquement ton <b>signe solaire</b> et l'heure du calcul, pour savoir combien de personnes utilisent le site. Ces données ne contiennent ni nom, ni e-mail, ni date de naissance, et ne permettent pas de t'identifier.</p>
+
+<h2>Si tu t'inscris pour rester en contact</h2>
+<p>Avec ton accord (case à cocher), nous enregistrons :</p>
+<ul>
+ <li>ton adresse e-mail ;</li>
+ <li>ton numéro WhatsApp, si tu le donnes ;</li>
+ <li>ta date de naissance et ton signe solaire ;</li>
+ <li>la date de ton inscription.</li>
+</ul>
+<p><b>À quoi cela sert :</b> t'envoyer des nouveautés du site et, plus tard, des contenus liés à ton signe. Nous ne vendons pas ces informations. <span class="todo">[À COMPLÉTER : durée de conservation, par exemple « jusqu'à ta demande de suppression »]</span></p>
+<p><b>Où elles sont stockées :</b> dans la base de données MySQL de notre hébergeur. Seul l'administrateur du site peut y accéder.</p>
+
+<h2>Tes droits</h2>
+<p>Tu peux demander à tout moment l'accès à tes données, leur correction ou leur suppression, et retirer ton accord. Écris à l'adresse de contact ci-dessus : ta demande sera traitée dans un délai raisonnable.</p>
+<p class="mut">Au Bénin, la protection des données personnelles est encadrée par le Code du numérique et l'Autorité de protection des données personnelles (APDP). <span class="todo">[À VÉRIFIER : les démarches de déclaration ou d'autorisation à faire auprès de l'APDP pour la collecte d'e-mails, avec un juriste ou directement auprès de l'autorité]</span></p>
+
+<h2>Cookies et services tiers</h2>
+<ul>
+ <li>Le site n'utilise pas de cookies publicitaires ni d'outil de suivi. L'administration utilise un cookie de connexion strictement nécessaire.</li>
+ <li>Les polices d'écriture sont chargées depuis Google Fonts : Google peut donc voir ton adresse IP lors du chargement.</li>
+ <li>Le site est hébergé par <span class="todo">[À COMPLÉTER : nom de ton hébergeur]</span>.</li>
+</ul>
+<p class="mut">Si tu ajoutes plus tard un outil de statistiques, de la publicité ou un paiement en ligne, mets cette page à jour.</p>
+
+<h2>Contenus</h2>
+<p>Les noms de personnages d'animé appartiennent à leurs auteurs et ayants droit. Ils sont cités à titre informatif. Les événements historiques viennent de Wikipédia, publiés sous licence libre.</p>
+</main>
+</body>
+</html>
