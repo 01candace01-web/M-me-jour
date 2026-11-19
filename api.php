@@ -2,7 +2,7 @@
 /**
  * Même Jour — API JSON (fetch depuis app.js et admin.js).
  * Actions publiques : messages (lecture), message, subscribe, stat, report.
- * Actions d'admin : préfixées admin_* , exige une session connectée dans admin.php.
+ * Actions d'admin : préfixées admin_* , exige une session connectée depuis admin.html.
  */
 
 require_once __DIR__ . '/db.php';
@@ -34,10 +34,57 @@ function require_admin(): void
 
 session_start();
 
+if (!isset($_SESSION['csrf'])) {
+    $_SESSION['csrf'] = bin2hex(random_bytes(16));
+}
+if (!isset($_SESSION['fails'])) {
+    $_SESSION['fails'] = 0;
+    $_SESSION['last_try'] = 0;
+}
+
+/**
+ * Contenu du site pour index.html : personnages, phrases, textes, drapeaux.
+ * Utilise les valeurs par défaut si la base est vide ou injoignable.
+ */
+function site_content(array &$out): void
+{
+    $def = defaults();
+    $out['characters'] = $def['characters'];
+    $out['phrases']    = $def['phrases'];
+    $out['texts']      = $def['texts'];
+    try {
+        $pdo = db();
+        $out['chat_on'] = true;
+        foreach ($pdo->query('SELECT k, value FROM site_texts')->fetchAll(PDO::FETCH_KEY_PAIR) as $k => $v) {
+            if (array_key_exists((string)$k, $out['texts'])) {
+                $out['texts'][(string)$k] = $v;
+            }
+        }
+        $crows = $pdo->query('SELECT name, series, birthday, antagonist FROM characters')->fetchAll();
+        if ($crows) {
+            $out['characters'] = array_map(fn($r) => [
+                $r['name'], $r['series'], $r['birthday'], (int)$r['antagonist'],
+            ], $crows);
+        }
+        $prows = $pdo->query('SELECT category, text FROM phrases')->fetchAll();
+        if ($prows) {
+            $fromDb = ['gen' => [], 'love' => [], 'work' => [], 'nrg' => [], 'mantra' => [], 'asc' => []];
+            foreach ($prows as $p) {
+                $fromDb[$p['category']][] = $p['text'];
+            }
+            foreach ($out['phrases'] as $k => $v) {
+                $out['phrases'][$k] = $fromDb[$k] ?: $v;
+            }
+        }
+    } catch (Throwable $e) {
+        $out['chat_on'] = false;
+    }
+}
+
 try {
     $pdo = db();
 } catch (Throwable $e) {
-    json_out(['ok' => false, 'error' => 'Base de données inaccessible.'], 500);
+    $pdo = null;
 }
 
 $action = $_GET['action'] ?? '';
@@ -47,7 +94,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $in = input();
 }
 
+if ($pdo === null && !in_array($action, ['bootstrap', 'login', 'me', 'logout'], true)) {
+    json_out(['ok' => false, 'error' => 'Base de données inaccessible.'], 500);
+}
+
 switch ($action) {
+
+case 'bootstrap': {
+    $out = ['ok' => true, 'chat_on' => false, 'characters' => [], 'phrases' => [], 'texts' => [], 'whatsapp' => CONTACT_WHATSAPP];
+    site_content($out);
+    json_out($out);
+}
+
+case 'me': {
+    json_out(['ok' => true, 'admin' => !empty($_SESSION['admin']), 'csrf' => $_SESSION['csrf']]);
+}
+
+case 'login': {
+    if ((int)$_SESSION['fails'] >= 5 && (time() - (int)$_SESSION['last_try'] < 300)) {
+        json_out(['ok' => false, 'error' => 'Trop de tentatives : réessaie dans quelques minutes.']);
+    }
+    $email = strtolower(trim((string)($in['email'] ?? '')));
+    $pwd = (string)($in['pwd'] ?? '');
+    if (hash_equals(ADMIN_EMAIL, $email) && hash_equals(ADMIN_PASSWORD, $pwd)) {
+        session_regenerate_id(true);
+        $_SESSION['admin'] = true;
+        $_SESSION['csrf'] = bin2hex(random_bytes(16));
+        $_SESSION['fails'] = 0;
+        json_out(['ok' => true, 'csrf' => $_SESSION['csrf']]);
+    }
+    $_SESSION['fails']++;
+    $_SESSION['last_try'] = time();
+    json_out(['ok' => false, 'error' => 'Identifiants incorrects.']);
+}
+
+case 'logout': {
+    $_SESSION = [];
+    session_destroy();
+    json_out(['ok' => true]);
+}
 
 case 'messages': {
     $day = $_GET['day'] ?? '';

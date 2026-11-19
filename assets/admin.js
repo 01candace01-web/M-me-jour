@@ -1,4 +1,4 @@
-// Même Jour — tableau de bord d'administration.
+// Même Jour — tableau de bord d'administration. Connexion gérée par api.php (sessions PHP).
 const $=id=>document.getElementById(id);
 function h(tag,attrs={},...kids){
  const e=document.createElement(tag);
@@ -6,7 +6,7 @@ function h(tag,attrs={},...kids){
  kids.flat().forEach(c=>e.append(c instanceof Node?c:document.createTextNode(c==null?"":String(c))));
  return e;
 }
-const CSRF=window.CSRF;
+let CSRF="";
 const MONTHS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 const PHRASE_CATS={gen:"Conseil du jour",love:"Amour et relations",work:"Travail et argent",nrg:"Énergie et santé",mantra:"Mantra du jour",asc:"Ascendant"};
 const TEXTS_LABELS={h1:"Titre principal",lead:"Texte d'introduction",btn_go:"Bouton principal",horo_note:"Note sous l'horoscope",sub_title:"Titre de l'inscription",sub_text:"Texte de l'inscription",about_title:"Titre « à propos »",about_text:"Texte « à propos »"};
@@ -16,7 +16,7 @@ async function api(action,body,method="GET"){
  const opt={method,headers:{"X-CSRF":CSRF}};
  if(method==="POST"){opt.headers["Content-Type"]="application/json";opt.body=JSON.stringify(body||{})}
  const r=await fetch("api.php?"+new URLSearchParams({action,...strip(body,method)}).toString(),opt);
- if(r.status===401){location.href="admin.php?logout=1";throw new Error("401")}
+ if(r.status===401){showLogin();throw new Error("401")}
  if(!r.ok) throw new Error((await r.text())||r.status);
  return r.json();
 }
@@ -26,7 +26,8 @@ function strip(body,method){
  for(const [k,v] of Object.entries(body)) if(v!=null&&typeof v!=="object") p[k]=v;
  return p;
 }
-(function(){ if(CSRF===undefined){say("Erreur de configuration de session.","err")} })();
+function showDashboard(){$("login").classList.add("hid");$("app").classList.remove("hid")}
+function showLogin(){$("app").classList.add("hid");$("login").classList.remove("hid")}
 
 const TABS=[["stats","Statistiques"],["users","Utilisateurs"],["villains","Personnages"],["phrases","Phrases"],["messages","Messages"],["texts","Textes"]];
 const show=k=>{
@@ -123,5 +124,21 @@ const VIEWS={
  }
 };
 $("tabs").replaceChildren(...TABS.map(([k,l])=>h("button",{type:"button","data-k":k,onclick:()=>show(k)},l)));
-show("stats");
-$("out").addEventListener("click",()=>{location.href="admin.php?logout=1"});
+$("out").addEventListener("click",async()=>{try{await fetch("api.php?action=logout",{method:"POST"})}catch(e){}showLogin()});
+
+$("login").addEventListener("submit",async ev=>{
+ ev.preventDefault();$("lmsg").textContent="";
+ try{
+  const r=await fetch("api.php?action=login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:$("email").value.trim(),pwd:$("pwd").value})});
+  const j=await r.json();
+  if(j.ok){CSRF=j.csrf;$("#pwd").value="";showDashboard();show("stats")}
+  else $("lmsg").textContent=j.error||"Identifiants incorrects.";
+ }catch(e){$("lmsg").textContent="Connexion impossible. Vérifie ta connexion internet."}
+});
+
+(async()=>{
+ try{
+  const j=await (await fetch("api.php?action=me")).json();
+  if(j.ok&&j.admin){CSRF=j.csrf;showDashboard();show("stats")}
+ }catch(e){}
+})();

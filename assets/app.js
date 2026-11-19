@@ -1,4 +1,4 @@
-// Même Jour — logique client. Les données (personnages, phrases) sont injectées par index.php.
+// Même Jour — interactions client. Les données viennent de l'API PHP (api.php), avec valeurs par défaut intégrées.
 const SIGNS=["Bélier","Taureau","Gémeaux","Cancer","Lion","Vierge","Balance","Scorpion","Sagittaire","Capricorne","Verseau","Poissons"];
 const ANIMALS=["Rat","Buffle","Tigre","Lapin","Dragon","Serpent","Cheval","Chèvre","Singe","Coq","Chien","Cochon"];
 const ELEMENTS=["Bois","Feu","Terre","Métal","Eau"];
@@ -8,8 +8,20 @@ const DAYS=["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
 const MONTHS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 const $=id=>document.getElementById(id);
 const pad=n=>String(n).padStart(2,"0");
-const T_GEN=SITE_PHRASES.gen||[],T_LOVE=SITE_PHRASES.love||[],T_WORK=SITE_PHRASES.work||[],T_NRG=SITE_PHRASES.nrg||[],T_MANTRA=SITE_PHRASES.mantra||[],T_ASC=SITE_PHRASES.asc||[];
+let CHARACTERS=DEF_CHARACTERS;
+let SITE_PHRASES=DEF_PHRASES;
+const TEXTS=Object.assign({},DEF_TEXTS);
+let CHAT_ON=false,WHATSAPP="";
 const API="api.php";
+const ready=fetch(API+"?action=bootstrap").then(r=>r.json()).then(j=>{
+ if(Array.isArray(j.characters)&&j.characters.length) CHARACTERS=j.characters;
+ if(j.phrases) for(const k of Object.keys(SITE_PHRASES)) if(Array.isArray(j.phrases[k])&&j.phrases[k].length) SITE_PHRASES[k]=j.phrases[k];
+ if(j.texts) for(const k of Object.keys(TEXTS)) if(typeof j.texts[k]==="string"&&j.texts[k]!=="") TEXTS[k]=j.texts[k];
+ document.querySelectorAll("[data-text]").forEach(el=>{const k=el.getAttribute("data-text");if(TEXTS[k]!=null)el.textContent=TEXTS[k]});
+ CHAT_ON=!!j.chat_on;
+ if(CHAT_ON){$("subSec").classList.remove("hid");$("chatSec").classList.remove("hid")}
+ if(j.whatsapp){const a=$("waBtn");a.href="https://wa.me/"+String(j.whatsapp).replace(/\D/g,"");a.classList.remove("hid")}
+}).catch(()=>{});
 async function post(action,body){
  const r=await fetch(API+"?action="+action,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
  const j=await r.json().catch(()=>({}));
@@ -171,7 +183,6 @@ $("shCopy").addEventListener("click",async()=>{
  catch(e){shNote("Copie impossible : sélectionne et copie le texte manuellement.")}
 });
 
-if(CHAT_ON){$("subSec").classList.remove("hid");$("chatSec").classList.remove("hid")}
 let lastBirth=null;
 (()=>$("sf").addEventListener("submit",async ev=>{
  ev.preventDefault();const b=$("sMsg");
@@ -182,7 +193,6 @@ let lastBirth=null;
   if(j.ok)$("sf").reset();
  }catch(e){b.textContent="Connexion impossible. Réessaie plus tard."}
 }))();
-if(WHATSAPP){const a=$("waBtn");a.href="https://wa.me/"+String(WHATSAPP).replace(/\D/g,"");a.classList.remove("hid")}
 
 const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 let autoRun=false,chatDay=null,chatTimer=null,lastSend=0,chatFirst=true;
@@ -239,6 +249,7 @@ const line=e=>[String(e.year??""),e.text||""];
 
 $("f").addEventListener("submit",async ev=>{
  ev.preventDefault();
+ await ready;
  const [y,m,d]=$("date").value.split("-").map(Number);
  if(!y) return;
  const auto=autoRun;autoRun=false;

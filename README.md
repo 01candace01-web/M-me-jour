@@ -1,49 +1,56 @@
 # Même Jour — version PHP + MySQL
 
-Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, inscriptions, back-office) en **PHP + MySQL**, sans Supabase.
+Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, inscriptions, back-office).
 
-## Contenu
+**Architecture demandée (chaque technologie a son rôle) :**
+- **HTML** — les pages : `index.html`, `admin.html`, `confidentialite.html`
+- **CSS** — l'affichage : `assets/style.css`, `assets/admin.css`, `assets/confidentialite.css`
+- **JavaScript** — les interactions : `assets/app.js`, `assets/admin.js`, `assets/data-defaults.js`
+- **PHP** — uniquement la base de données : `api.php` (API JSON), `db.php`, `config.php`, `install.php`, `defaults.php`
+
+## Fichiers
 
 | Fichier | Rôle |
 |---|---|
-| `index.php` | Page principale : données du site (personnages, phrases, textes) injectées depuis MySQL |
-| `app.js` | Logique client : signes, ascendant, horoscope, chat, partage (identique à l'original) |
-| `api.php` | API JSON : chat (`messages`, `message`, `report`), inscription (`subscribe`), stats (`stat`) |
-| `admin.php` | Administration : connexion par session PHP (identifiants de `config.php`) |
-| `admin.js` | Tableau de bord : statistiques, inscrits, personnages, phrases, messages, textes |
-| `confidentialite.php` | Page confidentialité / mentions légales |
+| `index.html` | Page principale (le navigateur charge les données via l'API) |
+| `app.js` | Interactions client : signes, ascendant, horoscope, chat, partage |
+| `style.css` | Tout l'affichage du site |
+| `api.php` | Seule porte vers MySQL : contenu du site, chat, inscription, stats, admin |
+| `admin.html` + `admin.js` + `admin.css` | Back-office (connexion par session PHP) |
 | `config.php` | **À remplir** : accès MySQL, e-mail + mot de passe admin, phrase secrète, WhatsApp |
 | `db.php` | Connexion PDO, hachage d'IP, limitation d'envois |
-| `defaults.php` | Valeurs par défaut (896 personnages, phrases, textes) si la base est vide |
+| `data-defaults.js` / `defaults.php` | Valeurs par défaut (896 personnages, phrases, textes) si la base est vide |
 | `schema.sql` | Schéma MySQL (7 tables + phrases par défaut) |
-| `seed-characters.sql` | Seed optionnel des 896 personnages (l'admin peut aussi les importer) |
+| `seed-characters.sql` | Seed optionnel des 896 personnages |
 | `install.php` | Crée la base et les tables automatiquement, puis **à supprimer** |
-| `assets/` | Logo, icônes, image de partage |
 
-## Installation
+## Installation avec XAMPP (Windows)
 
-1. Envoie tous les fichiers sur ton hébergement PHP (ou lance `php -S localhost:8000` dans le dossier pour tester en local).
-2. Crée une base MySQL sur ton hébergeur (chez certains, depuis phpMyAdmin ou le panneau).
-3. Remplis `config.php` : `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`.
-4. Ouvre `https://ton-site.fr/install.php` — il crée les tables (ou importe `schema.sql` via phpMyAdmin).
-5. **Supprime `install.php`.**
+1. Copie tout le contenu du projet dans `C:\xampp\htdocs\memejour\` (les fichiers doivent être directement dans ce dossier).
+2. Dans le **XAMPP Control Panel**, démarre **Apache** et **MySQL** (verts). Note le port d'Apache (80 par défaut ; `:8080` si indiqué).
+3. Crée la base : ouvre `http://localhost/phpmyadmin` → onglet **Bases de données** → crée `memejour` (sans accent).
+4. Dans `config.php`, mets :
+   ```php
+   define('DB_HOST', 'localhost');
+   define('DB_NAME', 'memejour');
+   define('DB_USER', 'root');      // XAMPP : utilisateur root
+   define('DB_PASS', '');          // XAMPP : mot de passe vide
+   ```
+5. Ouvre **`http://localhost/memejour/install.php`** → « Installation terminée ». **Supprime ensuite `install.php`.**
+6. Le site : **`http://localhost/memejour/`**. Admin : `http://localhost/memejour/admin.html`.
+
+⚠️ Toujours ouvrir via `http://localhost/...` — jamais en double-cliquant le fichier HTML dans l'Explorateur.
 
 ## Après installation (important)
 
-- Dans `config.php` : change `ADMIN_EMAIL`, `ADMIN_PASSWORD` et `IP_HASH_SECRET` (une longue phrase secrète).
-- Dans `index.php` : remplace `https://TON-SITE.fr` par ton domaine (balises canonical / Open Graph).
-- Admin : `https://ton-site.fr/admin.php`. Onglet **Personnages** → « Importer la liste par défaut » pour remplir la base depuis l'interface.
-- Renseigne aussi la page `confidentialite.php` (champs marqués « [À COMPLÉTER] »).
+- Dans `config.php` : change `ADMIN_EMAIL`, `ADMIN_PASSWORD` et `IP_HASH_SECRET` (longue phrase secrète).
+- Remplace `https://TON-SITE.fr` par ton domaine dans `index.html` (balises canonical / Open Graph).
+- Admin : onglet **Personnages** → « Importer la liste par défaut » pour remplir la base depuis l'interface.
 
 ## Fonctionnalités
 
-- **Calcul côté navigateur** : signe solaire, ascendant (via Open-Meteo pour géocodage et fuseau), astrologie chinoise, Lune, numérologie, âge, horoscope journalier déterministe, événements Wikipédia.
-- **Chat par jour de naissance** : public, sans liens, pseudos réservés interdits, messages signalables, rafraîchissement toutes les 6 s.
-- **Back-office complet** : stats par signe et par jour, export et suppression d'inscrits, CRUD personnages/phrases/textes, masquage/suppression de messages.
-- **Anti-spam** : validations serveur + limite d'envois par empreinte d'IP (`md5(IP + secret)`), jamais l'IP elle-même ; empreintes effacées après 24 h.
-- **Sécurité** : sessions admin (cookie HttpOnly / SameSite=Lax, limite de tentatives), jeton CSRF sur toutes les mutations admin, requêtes préparées partout, échappement HTML.
-
-## Différences assumées avec la version Supabase
-
-- L'admin se connecte avec e-mail + mot de passe définis dans `config.php` (pas de comptes multiples).
-- Le champ « sign » côté PHP est nommé `signe` et la colonne clé des textes est `site_texts.k` (mot réservé MySQL évité).
+- **Calculs côté navigateur** : signe solaire, ascendant (Open-Meteo pour géocodage et fuseau), astrologie chinoise, Lune, numérologie, âge, horoscope déterministe, événements Wikipédia.
+- **Chat par jour de naissance** : public, sans liens, pseudos réservés interdits, messages signalables.
+- **Back-office** : stats par signe et par jour, inscrits + export CSV, CRUD personnages/phrases/textes, masquage/suppression de messages.
+- **Anti-spam** : validations serveur + limites par empreinte d'IP (`md5(IP + secret)`), jamais l'IP elle-même ; empreintes effacées après 24 h.
+- **Sécurité** : sessions admin (cookie HttpOnly / SameSite=Lax, limite de tentatives), jeton CSRF sur les mutations, requêtes préparées, échappement HTML.
