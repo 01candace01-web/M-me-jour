@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /api.php
+
+# Remplace le domaine ci-dessous par l'adresse reelle de ton site
+Sitemap: https://TON-SITE.fr/sitemap.xml

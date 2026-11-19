@@ -1,0 +1,4 @@
+# Fichier ads.txt requis par Google AdSense (a proteger contre la falsification des annonces).
+# Quand ton inscription AdSense est validee, decommente la ligne ci-dessous et remplace
+# pub-XXXXXXXXXXXXXXXX par ton identifiant editeur (le meme que dans assets/ads.js).
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

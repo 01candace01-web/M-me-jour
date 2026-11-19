@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Même Jour</title>
+<meta name="description" content="Entre ta date de naissance : découvre ton signe, ton ascendant, ton horoscope du jour, les événements de ton jour et les personnages nés le même jour que toi.">
+<meta name="theme-color" content="#1c1a38">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✨%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- Remplace https://TON-SITE.fr par l'adresse réelle de ton site (garde le / final) -->
+<link rel="canonical" href="https://TON-SITE.fr/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Ce qui s'est passé le jour de ta naissance">
+<meta property="og:description" content="Signe, ascendant, horoscope du jour et personnages nés le même jour que toi. Essaie avec ta date !">
+<meta property="og:url" content="https://TON-SITE.fr/">
+<meta property="og:image" content="https://TON-SITE.fr/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ce qui s'est passé le jour de ta naissance">
+<meta name="twitter:description" content="Signe, ascendant, horoscope du jour et personnages nés le même jour que toi.">
+<meta name="twitter:image" content="https://TON-SITE.fr/assets/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main>
+<h1 data-text="h1">Ce qui s’est passé le jour de ta naissance</h1>
+<p class="lead" data-text="lead">Entre ta date, ton heure et ton lieu de naissance. Le site te donne ton ciel, ton histoire et les personnages nés le même jour que toi.</p>
+
+<form id="f">
+ <label>Date de naissance
+  <input type="date" id="date" required max="2100-12-31" min="1000-01-01">
+ </label>
+ <div class="row">
+  <label>Heure de naissance <small>pour l'ascendant</small>
+   <input type="time" id="time">
+  </label>
+  <label>Ville de naissance <small>pour l'ascendant</small>
+   <input type="text" id="place" placeholder="Ex. : Cotonou" autocomplete="off">
+  </label>
+ </div>
+ <label class="chk"><input type="checkbox" id="rem"> Se souvenir de moi (sur cet appareil seulement)</label>
+ <button id="go" type="submit" data-text="btn_go">Découvrir mon jour</button>
+</form>
+<p id="msg" role="status"></p>
+<button type="button" id="forget" class="hid">Oublier mes données</button>
+
+<div id="out" class="hid">
+ <section>
+  <p class="big" id="headline"></p>
+  <dl id="facts"></dl>
+  <div class="share">
+   <button type="button" class="wa" id="shWa">Partager sur WhatsApp</button>
+   <button type="button" id="shNative">Partager</button>
+   <button type="button" id="shCopy">Copier le texte</button>
+  </div>
+  <p class="note" id="shNote">Le partage ne contient ni l'heure ni la ville de naissance.</p>
+ </section>
+ <section>
+  <h2>Ton horoscope du jour</h2>
+  <p class="sub" id="hDate"></p>
+  <div class="nav">
+   <button type="button" id="hPrev">Jour précédent</button>
+   <button type="button" id="hToday">Aujourd'hui</button>
+   <button type="button" id="hNext">Jour suivant</button>
+  </div>
+  <div id="hTips"></div>
+  <dl id="hFacts"></dl>
+  <p class="note" data-text="horo_note">Horoscope de divertissement, composé à partir de ton signe, de la date et de la position de la Lune. Même signe et même jour donnent le même texte.</p>
+ </section>
+ <section id="subSec" class="hid">
+  <h2 data-text="sub_title">Reste en contact</h2>
+  <p class="sub" data-text="sub_text">Laisse ton e-mail ou ton numéro WhatsApp pour recevoir les nouveautés du site.</p>
+  <form id="sf">
+   <label>E-mail <input type="email" id="sEmail" required maxlength="200"></label>
+   <label>WhatsApp <small>facultatif</small> <input type="tel" id="sWa" maxlength="30" placeholder="+229 …"></label>
+   <label class="chk"><input type="checkbox" id="sConsent"> J'accepte que mon e-mail, mon numéro et ma date de naissance soient enregistrés pour être contacté. Je peux demander leur suppression à tout moment. <a href="confidentialite.html" target="_blank" rel="noopener">En savoir plus</a></label>
+   <button type="submit">Je m'inscris</button>
+  </form>
+  <p class="note" id="sMsg" role="status"></p>
+ </section>
+ <section id="chatSec" class="hid">
+  <h2>Salon des personnes nées ce jour</h2>
+  <p class="sub" id="chatTitle"></p>
+  <ul id="chatList"></ul>
+  <form id="cf">
+   <div class="row">
+    <label>Pseudo <input id="cPseudo" maxlength="24" autocomplete="off" placeholder="Ton pseudo"></label>
+    <label>Message <input id="cBody" maxlength="300" autocomplete="off" placeholder="Ton message…"></label>
+   </div>
+   <button type="submit">Envoyer</button>
+  </form>
+  <p class="note" id="cMsg" role="status"></p>
+  <p class="note">Messages publics, liens interdits. Chaque message peut être signalé. Voir <a href="confidentialite.html">la confidentialité</a>.</p>
+ </section>
+ <section>
+  <h2>Cette année-là, ce jour-là</h2>
+  <p class="sub" id="yearSub"></p>
+  <ul id="yearEv"></ul>
+ </section>
+ <section>
+  <h2>Personnalités nées le même jour</h2>
+  <p class="sub">Toutes années confondues.</p>
+  <ul id="births"></ul>
+ </section>
+ <section>
+  <h2>Personnages d'animé nés le même jour</h2>
+  <p class="sub" id="vilSub"></p>
+  <ul id="vil"></ul>
+ </section>
+ <section>
+  <h2>Autres événements de ce jour</h2>
+  <ul id="events"></ul>
+ </section>
+ <section class="about">
+  <h2 data-text="about_title">À propos</h2>
+  <p class="sub" data-text="about_text">Je m’appelle Credo et je vis à Calavi, au Bénin. J’ai créé ce site parce qu’un jour de naissance raconte plusieurs histoires à la fois : un ciel, des événements, et parfois un personnage d’animé qui partage ta date. Une idée ou une correction ? Écris-moi.</p>
+  <a id="waBtn" class="wab hid" href="#" target="_blank" rel="noopener">Discuter sur WhatsApp</a>
+ </section>
+</div>
+ <section class="adwrap">
+  <div class="ad-slot"></div>
+ </section>
+<footer class="foot"><a href="blog.html">Articles</a> · <a href="confidentialite.html">Confidentialité et mentions légales</a> · <a href="admin.html">Administration</a></footer>
+</main>
+
+<script src="assets/data-defaults.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
