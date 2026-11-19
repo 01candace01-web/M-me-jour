@@ -23,6 +23,10 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 | `schema.sql` | Schéma MySQL (7 tables + phrases par défaut) |
 | `seed-characters.sql` | Seed optionnel des 896 personnages |
 | `install.php` | Crée la base et les tables automatiquement, puis **à supprimer** |
+| `blog.html` + `blog/*.html` | 5 articles d'astrologie (contenu original) + index des articles |
+| `assets/ads.js` | Emplacements publicitaires Google AdSense (un seul réglage) |
+| `assets/blog.css` | Style des pages d'articles |
+| `ads.txt` / `robots.txt` / `sitemap.xml` | Fichiers exigés/utiles pour Google (AdSense et indexation) |
 
 ## Installation avec XAMPP (Windows)
 
@@ -44,8 +48,21 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 ## Après installation (important)
 
 - Dans `config.php` : change `ADMIN_EMAIL`, `ADMIN_PASSWORD` et `IP_HASH_SECRET` (longue phrase secrète).
-- Remplace `https://TON-SITE.fr` par ton domaine dans `index.html` (balises canonical / Open Graph).
+- Remplace `https://TON-SITE.fr` par ton domaine dans `index.html`, `blog.html`, les fichiers de `blog/`, `sitemap.xml`, `robots.txt` et `confidentialite.html` (balises canonical / Open Graph).
 - Admin : onglet **Personnages** → « Importer la liste par défaut » pour remplir la base depuis l'interface.
+
+## Google AdSense : pour être accepté et afficher les annonces
+
+Le site est déjà préparé : articles originaux, liens internes entre les pages, politique de confidentialité complète, emplacements publicitaires intégrés. Il te reste à faire ces étapes :
+
+1. **Mets le site en ligne sur un vrai domaine** (hebergeur avec PHP/MySQL : o2switch, Hostinger, OVH…). Google n'accepte **jamais** un site hébergé en `localhost`. Vérifie que toutes les pages s'ouvrent sans erreur et qu'aucun lien n'est cassé.
+2. **Remplace `https://TON-SITE.fr`** par ton domaine partout (voir ci-dessus), puis complète les `[À COMPLÉTER]` de `confidentialite.html` (nom, contact, date, hébergeur) : la page confidentialité doit être joignable depuis toutes les pages.
+3. **Inscris-toi sur [adsense.google.com](https://adsense.google.com)**, ajoute ton site, et colle le code de vérification dans la balise `<head>` de `index.html` (Google te donne un `<script>` à insérer ; tu peux aussi l'ajouter via `assets/ads.js`).
+4. **Une fois validé**, récupère ton identifiant éditeur (`ca-pub-…`) :
+   - ouvre `assets/ads.js` et colle-le dans `const ADSENSE_CLIENT = "ca-pub-…";` : les emplacements du site s'activent automatiquement (accueil, liste d'articles, milieu et bas de chaque article) ;
+   - décommente la ligne dans `ads.txt` avec le même identifiant ;
+   - dans AdSense, crée des blocs d'annonces (annonces display responsives, les annonces textuelles sont incluses automatiquement) et, si tu veux, indique leur numéro dans `data-ad-slot` des emplacements.
+5. **Conditions à respecter en continu** : contenu original, trafic humain (pas d'achat de visites, pas de clics sur tes propres annonces), pas de contenu interdit, aucune modification du code des annonces, page confidentialité à jour. L'astrologie étant présentée comme divertissement (c'est déjà le cas sur le site et dans la confidentialité), garde cette mention visible.
 
 ## Fonctionnalités
 
