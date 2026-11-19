@@ -11,7 +11,7 @@ define('DB_NAME', 'meme_jour');
 define('DB_USER', 'utilisateur');
 define('DB_PASS', 'motdepasse');
 
-// Identifiants de l'administration (https://ton-site.fr/admin.php).
+// Identifiants de l'administration (https://ton-site.fr/admin.html).
 // Change-les IMPÉRATIVEMENT après installation.
 define('ADMIN_EMAIL', 'admin@exemple.com');
 define('ADMIN_PASSWORD', 'ChangeMe2024!');

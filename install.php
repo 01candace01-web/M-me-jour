@@ -41,6 +41,6 @@ foreach ($statements as $q) {
 echo "Installation terminée : les tables sont créées.\n";
 echo "AVANT DE METTRE EN LIGNE :\n";
 echo " 1. Change ADMIN_EMAIL, ADMIN_PASSWORD et IP_HASH_SECRET dans config.php.\n";
-echo " 2. Remplace TON-SITE.fr par ton domaine dans index.php.\n";
+echo " 2. Remplace TON-SITE.fr par ton domaine dans index.html, blog.html, blog/, sitemap.xml et robots.txt.\n";
 echo " 3. Supprime install.php de ton hébergement.\n";
-echo "Ensuite : https://ton-site.fr/index.php (site) et /admin.php (administration).\n";
+echo "Ensuite : https://ton-site.fr/index.html (site), /blog.html (articles) et /admin.html (administration).\n";
