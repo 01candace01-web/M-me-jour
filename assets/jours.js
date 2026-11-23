@@ -50,7 +50,7 @@ $("jj").addEventListener("submit",function(ev){
   var premier=(new Date(yan,ymo-1,1).getDay()+6)%7;
   for(t=0;t<premier;t++){cal.appendChild(document.createElement("div"))}
   var auj=new Date(),aujour=auj.getDate(),aujmo=auj.getMonth()+1,aujan=auj.getFullYear();
-  var gList=[],rList=[],rxList=[];
+  var gList=[],rList=[],rxList=[],luni=[];
   var infos={};
   for(var j=1;j<=nb;j++){
     var dd0=ASTRO.dn(yan,ymo,j);
@@ -65,6 +65,8 @@ $("jj").addEventListener("submit",function(ev){
     if(cl.phase==="🌑"&&cl.c==="g"){cl.raison=cl.raison+" — nouvelle lune : moment classique pour lancer"}
     if(cl.phase==="🌕"){if(cl.c==="g"){cl.c="o";cl.raison="pleine lune : émotions fortes, privilégie la prudence — "+cl.raison}}
     infos[j]=cl;
+    if(cl.phase==="🌑")luni.push({j:j,nl:true});
+    if(cl.phase==="🌕")luni.push({j:j,nl:false});
     var cell=document.createElement("div");
     cell.className="day "+cl.c+(cl.rx?" rx":"");
     if(j===aujour&&ymo===aujmo&&yan===aujan)cell.classList.add("today");
@@ -105,7 +107,59 @@ $("jj").addEventListener("submit",function(ev){
     txt+="Pendant ces périodes, la tradition conseille de relire ses documents, reporter les grandes signatures et sauvegarder ses fichiers.";
   }
   $("rxLine").textContent=txt;
+  etat={yan:yan,ymo:ymo,infos:infos,gList:gList,rList:rList,rxList:rxList,luni:luni,signe:sgS};
+  $("icsBtn").disabled=false;
+  $("icsMsg").textContent="";
   $("res").classList.remove("hid");
   $("res").scrollIntoView({behavior:"smooth"});
+});
+
+/* ===== Export .ics pour Google Agenda (généré localement) ===== */
+var etat=null;
+function pad2(n){return (n<10?"0":"")+n}
+function dateIcs(y,mi,j){return y+pad2(mi)+pad2(j)}
+function echappeIcs(x){
+  return String(x).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\n/g,"\\n");
+}
+$("icsBtn").addEventListener("click",function(){
+  if(!etat)return;
+  var E=etat, nl=new Date(), events=[], i, j;
+  var tampon=dateIcs(nl.getFullYear(),nl.getMonth()+1,nl.getDate())+"T"
+    +pad2(nl.getUTCHours())+pad2(nl.getUTCMinutes())+"00Z";
+  function evt(y,mi,j,titre,desc){
+    var deb=new Date(Date.UTC(y,mi-1,j));
+    var fin=new Date(deb.getTime()+86400000);
+    function dmz(d){return d.getUTCFullYear()+pad2(d.getUTCMonth()+1)+pad2(d.getUTCDate())}
+    events.push("BEGIN:VEVENT\r\n"
+      +"UID:memejour-"+y+pad2(mi)+"-"+j+"-"+events.length+"@memejour\r\n"
+      +"DTSTAMP:"+tampon+"\r\n"
+      +"DTSTART;VALUE=DATE:"+dmz(deb)+"\r\n"
+      +"DTEND;VALUE=DATE:"+dmz(fin)+"\r\n"
+      +"SUMMARY:"+echappeIcs(titre)+"\r\n"
+      +"DESCRIPTION:"+echappeIcs(desc)+"\r\n"
+      +"END:VEVENT");
+  }
+  for(i=0;i<E.gList.length;i++){j=E.gList[i];
+    evt(E.yan,E.ymo,j,"🟢 Jour vert",E.infos[j].raison+" — généré par Même Jour");}
+  for(i=0;i<E.rList.length;i++){j=E.rList[i];
+    evt(E.yan,E.ymo,j,"🔴 Jour de prudence",E.infos[j].raison+" — généré par Même Jour");}
+  for(i=0;i<E.luni.length;i++){
+    evt(E.yan,E.ymo,E.luni[i].j,E.luni[i].nl?"🌑 Nouvelle lune":"🌕 Pleine lune","Phase lunaire du jour.");
+  }
+  var pg=plages(E.rxList);
+  for(i=0;i<pg.length;i++){
+    for(j=pg[i][0];j<=pg[i][1];j++){
+      evt(E.yan,E.ymo,j,"↺ Mercure rétrograde","Relis deux fois avant de signer, sauvegarde tes fichiers.");
+    }
+  }
+  var ics="BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Meme Jour//FR\r\nCALSCALE:GREGORIAN\r\n"
+    +events.join("\r\n")+"\r\nEND:VCALENDAR\r\n";
+  var blob=new Blob([ics],{type:"text/calendar;charset=utf-8"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="mes-jours-"+E.yan+"-"+pad2(E.ymo)+".ics";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href)},2000);
+  $("icsMsg").textContent="Fichier téléchargé : importe-le dans Google Agenda (Paramètres → Importer et exporter).";
 });
 })();

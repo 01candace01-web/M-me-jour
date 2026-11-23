@@ -26,3 +26,5 @@
   .day{min-height:50px;padding:4px 5px}
   .day .tag{display:none}
 }
+button.alt{background:transparent;color:var(--tx);border:1px solid var(--line);padding:12px 16px}
+button.alt:hover{border-color:var(--gold)}

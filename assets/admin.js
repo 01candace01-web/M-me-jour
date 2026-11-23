@@ -29,7 +29,7 @@ function strip(body,method){
 function showDashboard(){$("login").classList.add("hid");$("app").classList.remove("hid")}
 function showLogin(){$("app").classList.add("hid");$("login").classList.remove("hid")}
 
-const TABS=[["stats","Statistiques"],["users","Utilisateurs"],["villains","Personnages"],["phrases","Phrases"],["messages","Messages"],["texts","Textes"]];
+const TABS=[["stats","Statistiques"],["users","Utilisateurs"],["villains","Personnages"],["phrases","Phrases"],["messages","Messages"],["texts","Textes"],["rappels","Rappels e-mail"]];
 const show=k=>{
  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
  say("Chargement…");$("view").replaceChildren();
@@ -121,7 +121,22 @@ const VIEWS={
   $("view").append(h("div",{class:"card"},...items,h("button",{type:"button",onclick:async()=>{
    try{const body={};for(const k in fields)body[k]=fields[k].value.trim();await api("admin_texts_save",{texts:body},"POST");say("Textes enregistrés.","ok")}catch(e){say("Erreur : "+e.message,"err")}
   }},"Enregistrer les textes")));
- }
+ },
+ async rappels(){
+  const j=await api("admin_rappels"),r=j.rappels;
+  const del=async id=>{if(confirm("Supprimer ce rappel ?")){await api("admin_rappel_delete",{id},"POST");show("rappels")}};
+  $("view").append(
+   h("p",{},h("b",{},r.length+" rappel(s) e-mail actif(s)/reçus. "),
+     h("button",{class:"alt",type:"button",onclick:async()=>{try{const t=await api("admin_rappel_test",{},"POST");alert(t.envoye?"E-mail de test envoyé (regarde ta boîte ADMIN_EMAIL).":"La fonction mail() a refusé l'envoi : configure le sendmail (voir README).")}catch(e){say("Erreur : "+e.message,"err")}}},"Envoyer un e-mail de test à ADMIN_EMAIL")),
+   h("p",{class:"mut"},"L'envoi quotidien se fait par cron-quotidien.php (cron ou Planificateur de tâches — voir README)."),
+   h("div",{class:"card wrap"},h("table",{},
+    h("thead",{},h("tr",{},...["Date","E-mail","Signe","Actif",""].map(x=>h("th",{},x)))),
+    h("tbody",{},r.map(x=>h("tr",{},
+     h("td",{},new Date(x.created_at.replace(" ","T")).toLocaleDateString("fr-FR")),
+     h("td",{},x.email),h("td",{},x.signe||""),
+     h("td",{},+x.actif?"oui":"non"),
+     h("td",{},h("button",{class:"del",type:"button",onclick:()=>del(+x.id)},"Supprimer"))))))));
+ },
 };
 $("tabs").replaceChildren(...TABS.map(([k,l])=>h("button",{type:"button","data-k":k,onclick:()=>show(k)},l)));
 $("out").addEventListener("click",async()=>{try{await fetch("api.php?action=logout",{method:"POST"})}catch(e){}showLogin()});

@@ -73,9 +73,77 @@ function estRx(y,m,j){
   return false;
 }
 
+/* ===== Planètes (Mercure → Saturne), éléments orbitaux simplifiés =====
+   Précision de l'ordre du degré : largement suffisant pour un signe et un sens de marche.
+   rayonSoleil : distance Terre–Soleil (unités astronomiques) à d jours. */
+var rayonSoleil=function(d){
+  var M=nrm(356.0470+0.9856002585*d);
+  return 1.00014-0.01671*cs(M)-0.00014*cs(2*M);
+};
+var ORBITES={
+  "Mercure":{N:[48.3313,3.24587e-5],i:[7.0047,5.0e-8],w:[29.1241,1.01444e-5],a:0.387098,e:[0.205635,5.59e-10],M:[168.6562,4.0923344368]},
+  "Vénus":{N:[76.6799,2.46590e-5],i:[3.3946,2.75e-8],w:[54.8910,1.38374e-5],a:0.723330,e:[0.006773,-4.77e-9],M:[48.0052,1.6021302244]},
+  "Mars":{N:[49.5574,2.11081e-5],i:[1.8497,-1.78e-8],w:[286.5016,2.92961e-5],a:1.523688,e:[0.093405,2.516e-9],M:[18.6021,0.5240207766]},
+  "Jupiter":{N:[100.4542,2.76854e-5],i:[1.3030,-1.557e-7],w:[273.8777,1.64505e-5],a:5.20256,e:[0.048498,4.469e-9],M:[19.8950,0.0830853001]},
+  "Saturne":{N:[113.6634,2.38980e-5],i:[2.4886,-1.081e-7],w:[339.3939,2.97661e-5],a:9.55475,e:[0.055546,-9.499e-9],M:[316.9670,0.0334442282]}
+};
+/* Longitude géocentrique d'une planète (degrés) */
+function lonPlanete(nom,d){
+  var o=ORBITES[nom];
+  if(!o)return NaN;
+  var N=o.N[0]+o.N[1]*d, i=o.i[0]+o.i[1]*d, w=o.w[0]+o.w[1]*d;
+  var a=o.a, e=o.e[0]+o.e[1]*d, M=nrm(o.M[0]+o.M[1]*d);
+  var E=kepler(M,e);
+  var xv=a*(cs(E)-e), yv=a*Math.sqrt(1-e*e)*sn(E);
+  var v=deg(Math.atan2(yv,xv)), r=Math.sqrt(xv*xv+yv*yv);
+  var u=nrm(v+w);
+  var xh=r*(cs(N)*cs(u)-sn(N)*sn(u)*cs(i));
+  var yh=r*(sn(N)*cs(u)+cs(N)*sn(u)*cs(i));
+  /* vecteur géocentrique du Soleil, puis somme */
+  var lonS=lonSoleil(d), rS=rayonSoleil(d);
+  return nrm(deg(Math.atan2(yh+rS*sn(lonS),xh+rS*cs(lonS))));
+}
+/* Sens du mouvement : dérivée numérique sur ±0,25 jour (vrai = rétrograde).
+   Mercure : on utilise le tableau d'éphémérides exactes (estRx) à la place. */
+function retroPlanete(nom,d){
+  var b=lonPlanete(nom,d+0.25), a=lonPlanete(nom,d-0.25);
+  var diff=nrm(b-a); if(diff>180)diff-=360;
+  return diff<0;
+}
+/* dn depuis un objet Date (temps universel, fraction de jour incluse) */
+function dnDate(dt){
+  var y=dt.getUTCFullYear(), m=dt.getUTCMonth()+1, j=dt.getUTCDate();
+  var h=dt.getUTCHours()+dt.getUTCMinutes()/60+dt.getUTCSeconds()/3600;
+  return dn(y,m,j)+h/24;
+}
+/* Déclinaison (degrés) d'un point de longitude écliptique lon, latitude ~0 */
+function declinaison(lon,d){
+  var eps=23.4393-0.0000004*d;
+  return deg(Math.asin(sn(eps)*sn(lon)));
+}
+/* Positions instantanées : [{nom, lon, idx, deg, retro}] — Mercure via le tableau exact */
+function planetes(d){
+  var noms=["Mercure","Vénus","Mars","Jupiter","Saturne"], out=[{nom:"Soleil",lon:lonSoleil(d)}];
+  out.push({nom:"Lune",lon:lonLune(d)});
+  var i,nom,lon;
+  for(i=0;i<noms.length;i++){
+    nom=noms[i];
+    lon=lonPlanete(nom,d);
+    /* date calendaire UTC correspondant au jour fractionnaire d (dn=0 le 1999-12-31 0h TU) */
+    var dd=new Date(Date.UTC(1970,0,1)); dd.setUTCDate(dd.getUTCDate()+Math.floor(d)+10956);
+    out.push({nom:nom,lon:lon,retro:nom==="Mercure"?estRx(dd.getUTCFullYear(),dd.getUTCMonth()+1,dd.getUTCDate()):retroPlanete(nom,d)});
+  }
+  for(i=0;i<out.length;i++){
+    out[i].idx=signe(out[i].lon);
+    out[i].deg=nrm(out[i].lon)%30;
+  }
+  return out;
+}
+
 window.ASTRO={
   SIGNES:["Bélier","Taureau","Gémeaux","Cancer","Lion","Vierge","Balance","Scorpion","Sagittaire","Capricorne","Verseau","Poissons"],
-  dn:dn, lonSoleil:lonSoleil, lonLune:lonLune, signe:signe,
-  elong:elong, phase:phase, estRx:estRx
+  dn:dn, dnDate:dnDate, lonSoleil:lonSoleil, lonLune:lonLune, signe:signe,
+  elong:elong, phase:phase, estRx:estRx,
+  lonPlanete:lonPlanete, retroPlanete:retroPlanete, declinaison:declinaison, planetes:planetes
 };
 })();

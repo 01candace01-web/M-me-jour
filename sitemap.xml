@@ -16,5 +16,7 @@
   <url><loc>https://TON-SITE.fr/blog/journal-humeur-lune.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://TON-SITE.fr/compatibilite.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://TON-SITE.fr/blog/compatibilite-narrative.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/maintenant.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/ciel-en-direct.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://TON-SITE.fr/confidentialite.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

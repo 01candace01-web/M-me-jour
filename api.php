@@ -2,8 +2,9 @@
 /**
  * Même Jour — API JSON (fetch depuis app.js et admin.js).
  * Actions publiques : messages (lecture), message, subscribe, stat, report,
- * journal_get, journal_save, journal_delete (journal d'humeur, par jeton anonyme).
- * Actions d'admin : préfixées admin_* , exige une session connectée depuis admin.html.
+ * journal_get, journal_save, journal_delete (journal d'humeur, par jeton anonyme),
+ * rappel_add, rappel_out (rappel quotidien par e-mail).
+ * Actions d'admin : préfixées admin_* , exigent une session connectée depuis admin.html.
  */
 
 require_once __DIR__ . '/db.php';
@@ -197,6 +198,34 @@ case 'report': {
     $st = $pdo->prepare('INSERT INTO reports (message_id, ip_hash) VALUES (?, ?)');
     $st->execute([$id, ip_hash()]);
     json_out(['ok' => true]);
+}
+
+/* ===== Rappel quotidien par e-mail ===== */
+
+case 'rappel_add': {
+    $email = strtolower(trim((string)($in['email'] ?? '')));
+    $signe = trim((string)($in['signe'] ?? ''));
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 200) {
+        json_out(['ok' => false, 'error' => 'E-mail invalide.']);
+    }
+    if (mb_strlen($signe) > 20) {
+        json_out(['ok' => false, 'error' => 'Données invalides.']);
+    }
+    if (!rate_ok('rappels', 3, 3600)) json_out(['ok' => false, 'error' => 'Trop de requêtes, réessaie plus tard.']);
+    $st = $pdo->prepare('INSERT INTO rappels (email, signe, token) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE actif = 1, signe = VALUES(signe)');
+    $st->execute([$email, $signe !== '' ? $signe : null, bin2hex(random_bytes(16))]);
+    json_out(['ok' => true]);
+}
+
+case 'rappel_out': {
+    /* Lien de désinscription présent au bas de chaque e-mail (GET, avec jeton). */
+    $token = (string)($_GET['token'] ?? '');
+    header('Content-Type: text/html; charset=utf-8');
+    if (!preg_match('/^[a-f0-9]{32}$/', $token)) {
+        exit('<!DOCTYPE html><html lang="fr"><meta charset="utf-8"><title>Même Jour</title><p>Lien de désinscription invalide.</p>');
+    }
+    $pdo->prepare('DELETE FROM rappels WHERE token = ?')->execute([$token]);
+    exit('<!DOCTYPE html><html lang="fr"><meta charset="utf-8"><title>Même Jour — désinscription</title><body><p>Désinscription confirmée : tu ne recevras plus de rappel quotidien. <a href="/">Retour au site</a></p></body></html>');
 }
 
 /* ===== Journal d'humeur (jeton anonyme stocké dans le navigateur) ===== */
@@ -432,6 +461,30 @@ case 'admin_texts_save': {
         $st->execute([(string)$k, $v]);
     }
     json_out(['ok' => true]);
+}
+
+/* ===== Rappels e-mail (administration) ===== */
+
+case 'admin_rappels': {
+    require_admin();
+    $rows = $pdo->query('SELECT id, email, signe, actif, created_at FROM rappels ORDER BY id DESC LIMIT 500')->fetchAll(PDO::FETCH_ASSOC);
+    json_out(['ok' => true, 'rappels' => $rows]);
+}
+
+case 'admin_rappel_delete': {
+    require_admin();
+    $id = (int)($in['id'] ?? 0);
+    if ($id <= 0) json_out(['ok' => false, 'error' => 'Identifiant invalide.']);
+    $pdo->prepare('DELETE FROM rappels WHERE id = ?')->execute([$id]);
+    json_out(['ok' => true]);
+}
+
+case 'admin_rappel_test': {
+    require_admin();
+    require_once __DIR__ . '/rappels.php';
+    $corps = str_replace('__TOKEN__', 'jeton-de-test', email_ciel(null));
+    $envoye = envoyer_mail(ADMIN_EMAIL, 'Ton ciel du jour — e-mail de test', $corps);
+    json_out(['ok' => true, 'envoye' => $envoye]);
 }
 
 default:

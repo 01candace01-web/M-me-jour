@@ -21,3 +21,12 @@ define('IP_HASH_SECRET', 'CHANGE_ME_une_longue_phrase_secrete_de_ton_choix');
 
 // Numéro WhatsApp (chiffres seulement, ex. 22990112233) pour le bouton contact. Vide = bouton caché.
 define('CONTACT_WHATSAPP', '');
+
+// Adresse publique du site (sans / final) — utilisée dans les e-mails du rappel quotidien.
+define('SITE_URL', 'https://TON-SITE.fr');
+
+// Expéditeur des e-mails (doit exister sur ton hébergeur pour éviter les spams).
+define('MAIL_FROM', 'no-reply@TON-SITE.fr');
+
+// Phrase secrète pour déclencher le rappel quotidien (cron-quotidien.php). Change-la IMPÉRATIVEMENT.
+define('CRON_SECRET', 'CHANGE_ME_une_autre_longue_phrase_secrete');

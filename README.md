@@ -17,19 +17,20 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 | `style.css` | Tout l'affichage du site |
 | `api.php` | Seule porte vers MySQL : contenu du site, chat, inscription, stats, admin |
 | `admin.html` + `admin.js` + `admin.css` | Back-office (connexion par session PHP) |
-| `config.php` | **À remplir** : accès MySQL, e-mail + mot de passe admin, phrase secrète, WhatsApp |
+| `config.php` | **À remplir** : accès MySQL, e-mail + mot de passe admin, phrases secrètes, WhatsApp, URL du site, expéditeur e-mail |
 | `db.php` | Connexion PDO, hachage d'IP, limitation d'envois |
 | `data-defaults.js` / `defaults.php` | Valeurs par défaut (896 personnages, phrases, textes) si la base est vide |
-| `schema.sql` | Schéma MySQL (7 tables + phrases par défaut) |
+| `schema.sql` | Schéma MySQL (8 tables + phrases par défaut) |
 | `seed-characters.sql` | Seed optionnel des 896 personnages |
 | `install.php` | Crée la base et les tables automatiquement, puis **à supprimer** |
 | `jour-fa.html` + `assets/jour-fa.js` + `assets/jour-fa.css` | Outil « Ton jour Fâ » : prénom du jour (fon/adja + akan), croisement signe solaire, initiation pédagogique au Fâ et simulateur d'akplèkan |
-| `jours.html` + `assets/jours.js` + `assets/jours.css` | Outil « Jours verts et rouges » : calendrier décisionnel du mois (Lune × Soleil, phases lunaires, Mercure rétrograde) |
+| `jours.html` + `assets/jours.js` + `assets/jours.css` | Outil « Jours verts et rouges » : calendrier décisionnel du mois (Lune × Soleil, phases lunaires, Mercure rétrograde) + export .ics pour Google Agenda |
 | `journal.html` + `assets/journal.js` + `assets/journal.css` | Outil « Journal d'humeur » : note ton humeur (1–5), corrélations avec Lune/phases/Mercure, sauvegarde MySQL par jeton anonyme |
 | `compatibilite.html` + `assets/compat.js` + `assets/compat.css` | Outil « Compatibilité narrative » : deux naissances → prénoms du jour, signes solaires, aspect raconté, forces et frottements — zéro pourcentage, tout dans le navigateur |
 | `assets/prenoms.js` | Prénoms du jour (fon/adja + akan) et calendrier solaire approché, partagés par les outils |
-| `assets/astro.js` | Moteur astronomique partagé (Soleil, Lune, phases, Mercure rétrograde) utilisé par les outils |
-| `blog.html` + `blog/*.html` | 9 articles d'astrologie (contenu original) + index des articles |
+| `maintenant.html` + `assets/maintenant.js` + `assets/maintenant.css` | Outil « Le ciel en direct » : positions planétaires en temps réel (Soleil → Saturne), aspects avec le Soleil natal, horizon local (géolocalisation facultative), notifications du ciel, inscription au rappel e-mail |
+| `cron-quotidien.php` + `rappels.php` | Envoi du rappel quotidien par e-mail (à appeler 1×/jour par cron ou Planificateur de tâches) |
+| `blog.html` + `blog/*.html` | 10 articles d'astrologie (contenu original) + index des articles |
 | `assets/ads.js` | Emplacements publicitaires Google AdSense (un seul réglage) |
 | `assets/blog.css` | Style des pages d'articles |
 | `ads.txt` / `robots.txt` / `sitemap.xml` | Fichiers exigés/utiles pour Google (AdSense et indexation) |
@@ -70,6 +71,16 @@ Le site est déjà préparé : articles originaux, liens internes entre les page
    - décommente la ligne dans `ads.txt` avec le même identifiant ;
    - dans AdSense, crée des blocs d'annonces (annonces display responsives, les annonces textuelles sont incluses automatiquement) et, si tu veux, indique leur numéro dans `data-ad-slot` des emplacements.
 5. **Conditions à respecter en continu** : contenu original, trafic humain (pas d'achat de visites, pas de clics sur tes propres annonces), pas de contenu interdit, aucune modification du code des annonces, page confidentialité à jour. L'astrologie étant présentée comme divertissement (c'est déjà le cas sur le site et dans la confidentialité), garde cette mention visible.
+
+## Rappel quotidien par e-mail
+
+1. les visiteurs s'inscrivent sur `maintenant.html` (table MySQL `rappels`, jeton de désinscription automatique) ;
+2. l'e-mail de test se déclenche depuis l'administration (onglet « Rappels e-mail ») ;
+3. l'envoi quotidien appelle une fois par jour `cron-quotidien.php` :
+   - **hébergement Linux** : ajoute une tâche cron, par exemple à 7 h 00 : `0 7 * * * php /chemin/vers/cron-quotidien.php`
+   - **XAMPP (Windows)** : Planificateur de tâches de Windows → nouvelle tâche quotidienne à 7 h 00 → programme : `C:\xampp\php\php.exe` → arguments : `C:\xampp\htdocs\memejour\cron-quotidien.php`
+   - **hébergement mutualisé sans accès SSH** : planifie une visite quotidienne (il existe des services gratuits de « cron en ligne ») de `https://ton-site.fr/cron-quotidien.php?key=TA_PHRASE_SECRETE` (constante `CRON_SECRET` de `config.php`)
+4. sous XAMPP, la fonction `mail()` de PHP exige de configurer `sendmail_from` et le sendmail inclus (C:\xampp\sendmail\sendmail.ini) — sinon les e-mails ne partent pas ; sur un vrai hébergeur, `mail()` fonctionne d'ordinaire dès que le domaine est configuré.
 
 ## Fonctionnalités
 
