@@ -66,8 +66,24 @@ CREATE TABLE IF NOT EXISTS journal (
   lune VARCHAR(20) NULL,
   phase VARCHAR(4) NULL,
   retro TINYINT(1) NOT NULL DEFAULT 0,
+  ip_hash CHAR(32) NULL,
   UNIQUE KEY uq_journal_token_jour (token, jour),
-  KEY idx_journal_jour (jour)
+  KEY idx_journal_jour (jour),
+  KEY idx_journal_ip (ip_hash, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS commandes (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  ref CHAR(12) NOT NULL UNIQUE,
+  produit VARCHAR(20) NOT NULL,
+  montant INT UNSIGNED NOT NULL,
+  statut VARCHAR(12) NOT NULL DEFAULT 'en_attente',
+  feda_id VARCHAR(60) NULL,
+  paid_at DATETIME NULL,
+  expire DATE NULL,
+  ip_hash CHAR(32) NULL,
+  KEY idx_commandes_ip (ip_hash, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS rappels (
@@ -88,6 +104,9 @@ CREATE TABLE IF NOT EXISTS reports (
   KEY idx_reports_ip (ip_hash, created_at),
   CONSTRAINT fk_reports_message FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Si une base a été installée AVANT l'ajout du journal d'humeur chiffré par IP, exécute une fois :
+-- ALTER TABLE journal ADD COLUMN ip_hash CHAR(32) NULL, ADD KEY idx_journal_ip (ip_hash, created_at);
 
 -- Phrases par défaut (le site utilise aussi ses valeurs internes si ces tables sont vides).
 INSERT INTO phrases (category, text) VALUES

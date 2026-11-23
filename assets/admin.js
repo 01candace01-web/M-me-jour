@@ -29,7 +29,7 @@ function strip(body,method){
 function showDashboard(){$("login").classList.add("hid");$("app").classList.remove("hid")}
 function showLogin(){$("app").classList.add("hid");$("login").classList.remove("hid")}
 
-const TABS=[["stats","Statistiques"],["users","Utilisateurs"],["villains","Personnages"],["phrases","Phrases"],["messages","Messages"],["texts","Textes"],["rappels","Rappels e-mail"]];
+const TABS=[["stats","Statistiques"],["users","Utilisateurs"],["villains","Personnages"],["phrases","Phrases"],["messages","Messages"],["texts","Textes"],["rappels","Rappels e-mail"],["commandes","Paiements"]];
 const show=k=>{
  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
  say("Chargement…");$("view").replaceChildren();
@@ -136,6 +136,26 @@ const VIEWS={
      h("td",{},x.email),h("td",{},x.signe||""),
      h("td",{},+x.actif?"oui":"non"),
      h("td",{},h("button",{class:"del",type:"button",onclick:()=>del(+x.id)},"Supprimer"))))))));
+ },
+ async commandes(){
+  const j=await api("admin_commandes"),c=j.commandes;
+  const del=async id=>{if(confirm("Supprimer cette commande ?")){await api("admin_commande_delete",{id},"POST");show("commandes")}};
+  const paye=async id=>{await api("admin_commande_paye",{id},"POST");show("commandes")};
+  const mois=de=>de?new Date(de).toLocaleDateString("fr-FR"):"";
+  $("view").append(
+   h("p",{},h("b",{},c.filter(x=>x.statut==="paye").length+" payée(s) sur "+c.length+". "),
+     h("span",{class:"mut"},"La confirmation automatique vient du webhook FedaPay ; « Marquer payée » est le repli manuel (argent reçu autrement).")),
+   h("div",{class:"card wrap"},h("table",{},
+    h("thead",{},h("tr",{},...["Date","Référence","Offre","Montant","Statut","Expire",""].map(x=>h("th",{},x)))),
+    h("tbody",{},c.map(x=>h("tr",{},
+     h("td",{},mois(x.created_at)),
+     h("td",{},h("code",{},x.ref)),
+     h("td",{},x.produit),
+     h("td",{},x.montant+" F"),
+     h("td",{},x.statut),
+     h("td",{},mois(x.expire)),
+     h("td",{},h("button",{class:"alt",type:"button",onclick:()=>paye(+x.id)},"Marquer payée"),
+            h("button",{class:"del",type:"button",onclick:()=>del(+x.id)},"Supprimer"))))))));
  },
 };
 $("tabs").replaceChildren(...TABS.map(([k,l])=>h("button",{type:"button","data-k":k,onclick:()=>show(k)},l)));

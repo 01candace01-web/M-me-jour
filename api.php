@@ -4,6 +4,7 @@
  * Actions publiques : messages (lecture), message, subscribe, stat, report,
  * journal_get, journal_save, journal_delete (journal d'humeur, par jeton anonyme),
  * rappel_add, rappel_out (rappel quotidien par e-mail).
+ * offres, commande_add, acces_statut (offres payantes, paiement FedaPay).
  * Actions d'admin : préfixées admin_* , exigent une session connectée depuis admin.html.
  */
 
@@ -88,6 +89,7 @@ try {
 } catch (Throwable $e) {
     $pdo = null;
 }
+require_once __DIR__ . '/feda.php';
 
 $action = $_GET['action'] ?? '';
 $in = [];
@@ -226,6 +228,52 @@ case 'rappel_out': {
     }
     $pdo->prepare('DELETE FROM rappels WHERE token = ?')->execute([$token]);
     exit('<!DOCTYPE html><html lang="fr"><meta charset="utf-8"><title>Même Jour — désinscription</title><body><p>Désinscription confirmée : tu ne recevras plus de rappel quotidien. <a href="/">Retour au site</a></p></body></html>');
+}
+
+/* ===== Offres payantes (paiement Mobile Money via FedaPay) ===== */
+
+case 'offres': {
+    $o = [];
+    foreach (offres() as $cle => $offre) {
+        $o[] = ['cle' => $cle, 'label' => $offre['label'], 'montant' => $offre['montant']];
+    }
+    json_out(['ok' => true, 'offres' => $o, 'configure' => FEDA_SECRET !== '', 'whatsapp' => CONTACT_WHATSAPP]);
+}
+
+case 'commande_add': {
+    if (!rate_ok('commandes', 10, 3600)) json_out(['ok' => false, 'error' => 'Trop de requêtes, réessaie plus tard.']);
+    $cle = (string)($in['produit'] ?? '');
+    $offres = offres();
+    if (!isset($offres[$cle])) json_out(['ok' => false, 'error' => 'Offre inconnue.']);
+    $ref = strtoupper(bin2hex(random_bytes(6)));
+    $st = $pdo->prepare('INSERT INTO commandes (ref, produit, montant, ip_hash) VALUES (?, ?, ?, ?)');
+    $st->execute([$ref, $cle, $offres[$cle]['montant'], ip_hash()]);
+    if (FEDA_SECRET === '') {
+        json_out(['ok' => false, 'error' => "Le paiement en ligne n'est pas encore activé sur ce site : contacte-nous pour finaliser.", 'whatsapp' => CONTACT_WHATSAPP]);
+    }
+    $r = feda_creer_paiement(
+        $cle,
+        $ref,
+        SITE_URL . '/premium.html?ref=' . $ref,
+        SITE_URL . '/webhook.php?secret=' . rawurlencode(FEDA_WEBHOOK_SECRET)
+    );
+    if (isset($r['erreur'])) {
+        json_out(['ok' => false, 'error' => 'Paiement momentanément indisponible : ' . $r['erreur']]);
+    }
+    $pdo->prepare('UPDATE commandes SET feda_id = ? WHERE ref = ?')->execute([$r['feda_id'], $ref]);
+    json_out(['ok' => true, 'url' => $r['url']]);
+}
+
+case 'acces_statut': {
+    $ref = strtoupper(trim((string)($_GET['ref'] ?? '')));
+    if (!preg_match('/^[A-Z0-9]{12}$/', $ref)) json_out(['ok' => false, 'error' => 'Référence invalide.']);
+    if (!rate_ok('commandes', 90, 300)) json_out(['ok' => false, 'error' => 'Trop de requêtes, réessaie plus tard.']);
+    $st = $pdo->prepare('SELECT statut, expire, produit FROM commandes WHERE ref = ?');
+    $st->execute([$ref]);
+    $c = $st->fetch(PDO::FETCH_ASSOC);
+    if (!$c) json_out(['ok' => false, 'error' => 'Référence inconnue.']);
+    $paye = $c['statut'] === 'paye' && ($c['expire'] === null || $c['expire'] >= date('Y-m-d'));
+    json_out(['ok' => true, 'paye' => $paye, 'expire' => $c['expire'], 'produit' => $c['produit']]);
 }
 
 /* ===== Journal d'humeur (jeton anonyme stocké dans le navigateur) ===== */
@@ -485,6 +533,36 @@ case 'admin_rappel_test': {
     $corps = str_replace('__TOKEN__', 'jeton-de-test', email_ciel(null));
     $envoye = envoyer_mail(ADMIN_EMAIL, 'Ton ciel du jour — e-mail de test', $corps);
     json_out(['ok' => true, 'envoye' => $envoye]);
+}
+
+/* ===== Commandes (paiements FedaPay) ===== */
+
+case 'admin_commandes': {
+    require_admin();
+    $rows = $pdo->query('SELECT id, ref, produit, montant, statut, feda_id, expire, paid_at, created_at FROM commandes ORDER BY id DESC LIMIT 500')->fetchAll(PDO::FETCH_ASSOC);
+    json_out(['ok' => true, 'commandes' => $rows]);
+}
+
+case 'admin_commande_paye': {
+    /* Repli manuel : argent reçu autrement (espèces, MoMo direct), l'admin marque payé. */
+    require_admin();
+    $id = (int)($in['id'] ?? 0);
+    if ($id <= 0) json_out(['ok' => false, 'error' => 'Identifiant invalide.']);
+    $st = $pdo->prepare('SELECT produit FROM commandes WHERE id = ?');
+    $st->execute([$id]);
+    $c = $st->fetch(PDO::FETCH_ASSOC);
+    if (!$c) json_out(['ok' => false, 'error' => 'Commande inconnue.']);
+    $jours = isset(offres()[$c['produit']]) ? (int)offres()[$c['produit']]['jours'] : 30;
+    $pdo->prepare("UPDATE commandes SET statut = 'paye', paid_at = NOW(), expire = DATE_ADD(CURDATE(), INTERVAL " . $jours . " DAY) WHERE id = ?")->execute([$id]);
+    json_out(['ok' => true]);
+}
+
+case 'admin_commande_delete': {
+    require_admin();
+    $id = (int)($in['id'] ?? 0);
+    if ($id <= 0) json_out(['ok' => false, 'error' => 'Identifiant invalide.']);
+    $pdo->prepare('DELETE FROM commandes WHERE id = ?')->execute([$id]);
+    json_out(['ok' => true]);
 }
 
 default:

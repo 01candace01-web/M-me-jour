@@ -32,7 +32,9 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 | `coach.html` + `assets/coach.js` | Outil « Ton coach de thème » : moteur de règles local qui croise ta question (fatigue, argent, travail, amour…), ton thème natal et le ciel du moment — sans envoi au serveur |
 | `theme-video.html` + `assets/theme-video.js` | Outil « Ton thème en vidéo » : une vidéo animée d'environ 30 secondes (Soleil, Lune, ascendant, Vénus, Mars…) dessinée en canvas et téléchargeable en .webm |
 | `carte3d.html` + `assets/carte3d.js` | Outil « Ta carte du ciel en 3D » : anneau écliptique que l'on fait tourner (glisser/zoomer), 12 signes, planètes, aspects colorés et ascendant — projection maison en canvas |
-| `assets/viz.css` | Styles partagés des pages interactives (coach, vidéo, 3D) |
+| `assets/viz.css` | Styles partagés des pages interactives (coach, vidéo, 3D, rapport premium) |
+| `premium.html` + `assets/premium.js` | Offres payantes : rapport de naissance complet, paiement Mobile Money (FedaPay), déblocage automatique après paiement, impression PDF |
+| `feda.php` + `webhook.php` | Branchement FedaPay : création de paiements (cURL) et confirmation automatique par webhook |
 | `cron-quotidien.php` + `rappels.php` | Envoi du rappel quotidien par e-mail (à appeler 1×/jour par cron ou Planificateur de tâches) |
 | `blog.html` + `blog/*.html` | 12 articles d'astrologie (contenu original) + index des articles |
 | `assets/ads.js` | Emplacements publicitaires Google AdSense (un seul réglage) |
@@ -85,6 +87,20 @@ Le site est déjà préparé : articles originaux, liens internes entre les page
    - **XAMPP (Windows)** : Planificateur de tâches de Windows → nouvelle tâche quotidienne à 7 h 00 → programme : `C:\xampp\php\php.exe` → arguments : `C:\xampp\htdocs\memejour\cron-quotidien.php`
    - **hébergement mutualisé sans accès SSH** : planifie une visite quotidienne (il existe des services gratuits de « cron en ligne ») de `https://ton-site.fr/cron-quotidien.php?key=TA_PHRASE_SECRETE` (constante `CRON_SECRET` de `config.php`)
 4. sous XAMPP, la fonction `mail()` de PHP exige de configurer `sendmail_from` et le sendmail inclus (C:\xampp\sendmail\sendmail.ini) — sinon les e-mails ne partent pas ; sur un vrai hébergeur, `mail()` fonctionne d'ordinaire dès que le domaine est configuré.
+
+## Paiement Mobile Money avec FedaPay (offres payantes)
+
+La page `premium.html` vend le **rapport de naissance complet** (2 000 F, 30 jours) et
+**rapport + année favorable** (5 000 F, 365 jours) via [FedaPay](https://fedapay.com).
+
+1. crée un compte FedaPay, valide ton marchand, puis copie ta **clé secrète** dans `config.php` (constante `FEDA_SECRET`) ;
+2. mets `FEDA_ENV` à `'sandbox'` pour tester avec l'argent fictif, puis `'live'` pour encaisser réellement ;
+3. dans le tableau de bord FedaPay, déclare le **webhook** : `https://ton-site.fr/webhook.php?secret=FEDA_WEBHOOK_SECRET` (la même phrase secrète que dans `config.php`) — c'est lui qui **débloque l'accès tout seul** après paiement ;
+4. les prix se règlent dans `config.php` (constantes `PRIX_RAPPORT` et `PRIX_ANNEE`), le catalogue dans `feda.php` (fonction `offres()`) ;
+5. l'onglet **Paiements** de `admin.html` liste les commandes ; « Marquer payée » sert de repli si un client paie par un autre canal ;
+6. `FEDA_SECRET` vide = le site affiche proprement un contact WhatsApp à la place du paiement en ligne.
+
+Si la table `commandes` n'existe pas (base installée avant l'ajout), réexécute `install.php` ou importe `schema.sql` : le script ne touche pas aux autres tables (`CREATE TABLE IF NOT EXISTS`).
 
 ## Fonctionnalités
 

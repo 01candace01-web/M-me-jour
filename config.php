@@ -30,3 +30,16 @@ define('MAIL_FROM', 'no-reply@TON-SITE.fr');
 
 // Phrase secrète pour déclencher le rappel quotidien (cron-quotidien.php). Change-la IMPÉRATIVEMENT.
 define('CRON_SECRET', 'CHANGE_ME_une_autre_longue_phrase_secrete');
+
+// ===== Offres payantes (paiement Mobile Money via FedaPay — https://fedapay.com) =====
+// 1. crée un compte FedaPay et valide ton marchand ;
+// 2. dans « API keys », copie la clé secrète (elle commence par sk_...) ;
+// 3. FEDA_ENV : 'sandbox' pour tester avec de l'argent fictif, 'live' pour l'argent réel ;
+// 4. FEDA_SECRET vide = le paiement en ligne est désactivé (le site affiche le contact WhatsApp).
+define('FEDA_ENV', 'sandbox');
+define('FEDA_SECRET', '');
+// Phrase secrète du webhook de confirmation (met-la aussi dans l'URL du webhook côté FedaPay).
+define('FEDA_WEBHOOK_SECRET', 'CHANGE_ME_phrase_secrete_du_webhook_fedapay');
+// Prix des offres, en FCFA (XOF).
+define('PRIX_RAPPORT', 2000);
+define('PRIX_ANNEE', 5000);

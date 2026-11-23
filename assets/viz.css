@@ -29,3 +29,22 @@
 .plist{display:grid;gap:8px}
 .plist li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
 .plist .why{color:var(--mut);font-size:.9rem}
+
+/* ===== Rapport complet (premium) ===== */
+.prix{font-size:1.35rem;margin:6px 0}
+.poche .big{font-weight:800}
+#rapport{border:1px solid var(--line);border-radius:14px;padding:6px 20px 14px;background:var(--card);margin:14px 0}
+#rapport h3{color:var(--gold);margin-top:22px}
+.refin{max-width:16rem}
+.poche{display:flex;flex-direction:column;gap:6px}
+.refin{font:inherit;padding:12px;background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:10px}
+.refin:focus{outline:2px solid var(--gold);outline-offset:2px}
+
+/* Impression : fond clair, texte lisible */
+@media print{
+  body{background:#fff;color:#111}
+  #rapport{border-color:#bbb;background:#fff}
+  #rapport h3{color:#111}
+  #rapport .disclaimer{color:#555}
+  .adwrap,.foot,.rel,nav.crumb{display:none}
+}
