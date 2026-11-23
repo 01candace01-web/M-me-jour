@@ -25,7 +25,9 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 | `install.php` | Crée la base et les tables automatiquement, puis **à supprimer** |
 | `jour-fa.html` + `assets/jour-fa.js` + `assets/jour-fa.css` | Outil « Ton jour Fâ » : prénom du jour (fon/adja + akan), croisement signe solaire, initiation pédagogique au Fâ et simulateur d'akplèkan |
 | `jours.html` + `assets/jours.js` + `assets/jours.css` | Outil « Jours verts et rouges » : calendrier décisionnel du mois (Lune × Soleil, phases lunaires, Mercure rétrograde) |
-| `blog.html` + `blog/*.html` | 7 articles d'astrologie (contenu original) + index des articles |
+| `journal.html` + `assets/journal.js` + `assets/journal.css` | Outil « Journal d'humeur » : note ton humeur (1–5), corrélations avec Lune/phases/Mercure, sauvegarde MySQL par jeton anonyme |
+| `assets/astro.js` | Moteur astronomique partagé (Soleil, Lune, phases, Mercure rétrograde) utilisé par les outils |
+| `blog.html` + `blog/*.html` | 8 articles d'astrologie (contenu original) + index des articles |
 | `assets/ads.js` | Emplacements publicitaires Google AdSense (un seul réglage) |
 | `assets/blog.css` | Style des pages d'articles |
 | `ads.txt` / `robots.txt` / `sitemap.xml` | Fichiers exigés/utiles pour Google (AdSense et indexation) |
@@ -43,6 +45,7 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
    define('DB_PASS', '');          // XAMPP : mot de passe vide
    ```
 5. Ouvre **`http://localhost/memejour/install.php`** → « Installation terminée ». **Supprime ensuite `install.php`.**
+   (Mise à jour : `install.php` peut être relancé sans risque à chaque nouvelle version — il ne crée que les tables manquantes, comme `journal`. Supprime-le ensuite de nouveau.)
 6. Le site : **`http://localhost/memejour/`**. Admin : `http://localhost/memejour/admin.html`.
 
 ⚠️ Toujours ouvrir via `http://localhost/...` — jamais en double-cliquant le fichier HTML dans l'Explorateur.

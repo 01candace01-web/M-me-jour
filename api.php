@@ -1,7 +1,8 @@
 <?php
 /**
  * Même Jour — API JSON (fetch depuis app.js et admin.js).
- * Actions publiques : messages (lecture), message, subscribe, stat, report.
+ * Actions publiques : messages (lecture), message, subscribe, stat, report,
+ * journal_get, journal_save, journal_delete (journal d'humeur, par jeton anonyme).
  * Actions d'admin : préfixées admin_* , exige une session connectée depuis admin.html.
  */
 
@@ -195,6 +196,59 @@ case 'report': {
     if (!rate_ok('reports', 20, 600)) json_out(['ok' => false, 'error' => 'Trop de requêtes, réessaie plus tard.']);
     $st = $pdo->prepare('INSERT INTO reports (message_id, ip_hash) VALUES (?, ?)');
     $st->execute([$id, ip_hash()]);
+    json_out(['ok' => true]);
+}
+
+/* ===== Journal d'humeur (jeton anonyme stocké dans le navigateur) ===== */
+
+function journal_token(string $t): bool
+{
+    return (bool)preg_match('/^[a-f0-9]{32,64}$/', $t);
+}
+
+case 'journal_get': {
+    $tok = (string)($_GET['token'] ?? '');
+    if (!journal_token($tok)) json_out(['ok' => false, 'error' => 'Jeton invalide.']);
+    if (!rate_ok('journal', 60, 60)) json_out(['ok' => false, 'error' => 'Trop de requêtes, réessaie plus tard.']);
+    $st = $pdo->prepare('SELECT jour, humeur, note, signe, lune, phase, retro FROM journal WHERE token = ? ORDER BY jour DESC LIMIT 400');
+    $st->execute([$tok]);
+    $rows = $st->fetchAll(PDO::FETCH_ASSOC);
+    json_out(['ok' => true, 'entries' => $rows]);
+}
+
+case 'journal_save': {
+    $tok   = (string)($in['token'] ?? '');
+    $jour  = (string)($in['jour'] ?? '');
+    $humeur= (int)($in['humeur'] ?? 0);
+    $note  = trim((string)($in['note'] ?? ''));
+    $signe = trim((string)($in['signe'] ?? ''));
+    $lune  = trim((string)($in['lune'] ?? ''));
+    $phase = trim((string)($in['phase'] ?? ''));
+    $retro = !empty($in['retro']) ? 1 : 0;
+    if (!journal_token($tok))       json_out(['ok' => false, 'error' => 'Jeton invalide.']);
+    if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $jour)) json_out(['ok' => false, 'error' => 'Date invalide.']);
+    if ($humeur < 1 || $humeur > 5) json_out(['ok' => false, 'error' => 'Humeur invalide (1 à 5).']);
+    if (mb_strlen($note) > 280)     json_out(['ok' => false, 'error' => 'Note limitée à 280 caractères.']);
+    if (mb_strlen($signe) > 20 || mb_strlen($lune) > 20 || mb_strlen($phase) > 4) {
+        json_out(['ok' => false, 'error' => 'Données invalides.']);
+    }
+    if (!rate_ok('journal', 30, 60)) json_out(['ok' => false, 'error' => 'Trop de requêtes, réessaie plus tard.']);
+    $st = $pdo->prepare('INSERT INTO journal (jour, token, humeur, note, signe, lune, phase, retro) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE humeur = VALUES(humeur), note = VALUES(note), signe = VALUES(signe), lune = VALUES(lune), phase = VALUES(phase), retro = VALUES(retro)');
+    $st->execute([$jour, $tok, $humeur, $note !== '' ? $note : null,
+        $signe !== '' ? $signe : null, $lune !== '' ? $lune : null,
+        $phase !== '' ? $phase : null, $retro]);
+    json_out(['ok' => true]);
+}
+
+case 'journal_delete': {
+    $tok  = (string)($in['token'] ?? '');
+    $jour = (string)($in['jour'] ?? '');
+    if (!journal_token($tok))                        json_out(['ok' => false, 'error' => 'Jeton invalide.']);
+    if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $jour)) json_out(['ok' => false, 'error' => 'Date invalide.']);
+    if (!rate_ok('journal', 30, 60)) json_out(['ok' => false, 'error' => 'Trop de requêtes, réessaie plus tard.']);
+    $st = $pdo->prepare('DELETE FROM journal WHERE token = ? AND jour = ?');
+    $st->execute([$tok, $jour]);
     json_out(['ok' => true]);
 }
 
