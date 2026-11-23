@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compatibilité narrative : votre histoire, pas un pourcentage | Même Jour</title>
+<meta name="description" content="Pas de « 78 % » : entre deux dates de naissance, ton prénom du jour et ton signe solaire racontent une vraie histoire de relation — forces, frottements, complémentarités.">
+<meta name="theme-color" content="#1c1a38">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✨%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- Remplace https://TON-SITE.fr par l'adresse réelle de ton site (garde le / final) -->
+<link rel="canonical" href="https://TON-SITE.fr/compatibilite.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Compatibilité narrative : votre histoire, pas un pourcentage">
+<meta property="og:description" content="Deux naissances, une histoire : prénoms du jour (fon/adja + akan), signes solaires, forces et frottements — racontés, pas notés sur 100.">
+<meta property="og:url" content="https://TON-SITE.fr/compatibilite.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/blog.css">
+<link rel="stylesheet" href="assets/compat.css">
+</head>
+<body>
+<main class="art">
+<nav class="crumb"><a href="index.html">Accueil</a> › <span>Compatibilité narrative</span></nav>
+<article>
+<h1>Votre compatibilité, racontée</h1>
+<p class="meta">Prénoms du jour (fon/adja + akan) · signes solaires · forces et frottements</p>
+
+<p>Les sites d'horoscope te donnent « Bélier + Balance = 78 % ». Ça ne raconte rien. Ici, tu donnes <b>deux dates de naissance</b> (et des prénoms si tu veux), et tu reçois une <b>histoire</b> : vos prénoms du jour, vos signes, ce qui vous pousse ensemble, ce qui frotte, et ce que chaque frottement peut devenir.</p>
+<p class="note">Tout est calculé dans ton navigateur : rien n'est envoyé ni enregistré sur le serveur.</p>
+
+<form id="cform">
+ <div class="row">
+  <label>Prénom A <small>facultatif</small>
+   <input type="text" id="pa" maxlength="40" autocomplete="off" placeholder="Ex : Kofi">
+  </label>
+  <label>Naissance A
+   <input type="date" id="da" required>
+  </label>
+ </div>
+ <div class="row">
+  <label>Prénom B <small>facultatif</small>
+   <input type="text" id="pb" maxlength="40" autocomplete="off" placeholder="Ex : Abla">
+  </label>
+  <label>Naissance B
+   <input type="date" id="db" required>
+  </label>
+ </div>
+ <button type="submit">Raconter notre histoire</button>
+</form>
+<p id="m" role="status"></p>
+
+<div id="res" class="hid">
+ <section>
+  <h2>Vos prénoms du jour</h2>
+  <p id="prenomA"></p>
+  <p id="prenomB"></p>
+  <p id="prenomRel" class="sub"></p>
+ </section>
+ <section>
+  <h2>Vos signes solaires</h2>
+  <p id="signeA"></p>
+  <p id="signeB"></p>
+  <p id="aspect" class="sub"></p>
+ </section>
+ <section>
+  <h2>Ce qui vous pousse ensemble</h2>
+  <p id="forces"></p>
+ </section>
+ <section>
+  <h2>Ce qui frotte (et comment en faire une force)</h2>
+  <p id="frotte"></p>
+ </section>
+ <section class="adwrap"><div class="ad-slot"></div></section>
+ <section>
+  <h2>Pourquoi pas de pourcentage</h2>
+  <p>Un chiffre comme « 78 % » est du théâtre : la synastrie sérieuse — l'étude des relations entre deux thèmes — ne note jamais une relation sur 100. Une conjonction peut être fusion charmante ou étouffement ; un carré peut être dissension permanente ou moteur. Ce qui change tout, c'est ce que <b>vous en faites</b>. Cette page te donne le vocabulaire de votre duo, pas une note de fin d'année.</p>
+  <p class="note">Et bien sûr : cela décrit des tendances symboliques, pas un destin. Les meilleurs couples sont des carrés bien joués ; les pires, des trines fatiguées.</p>
+ </section>
+ <section class="rel">
+  <h2>En savoir plus</h2>
+  <div class="cards">
+   <a class="card" href="blog/compatibilite-narrative.html"><b>La compatibilité au-delà des pourcentages</b><span>D'où viennent les « Bélier + Balance = 78 % », et que dit la vraie synastrie.</span></a>
+   <a class="card" href="jour-fa.html"><b>Ton jour Fâ</b><span>Les prénoms du jour en détail : fon/adja, akan et initiation au Fâ.</span></a>
+   <a class="card" href="jours.html"><b>Jours verts et rouges</b><span>Choisis ensemble les bonnes dates de votre mois.</span></a>
+  </div>
+ </section>
+</div>
+</article>
+<footer class="foot"><a href="index.html">Retour au site</a> · <a href="blog.html">Tous les articles</a> · <a href="confidentialite.html">Confidentialité et mentions légales</a></footer>
+</main>
+<script src="assets/ads.js"></script>
+<script src="assets/astro.js"></script>
+<script src="assets/prenoms.js"></script>
+<script src="assets/compat.js"></script>
+</body>
+</html>

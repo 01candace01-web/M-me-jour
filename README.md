@@ -26,8 +26,10 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 | `jour-fa.html` + `assets/jour-fa.js` + `assets/jour-fa.css` | Outil « Ton jour Fâ » : prénom du jour (fon/adja + akan), croisement signe solaire, initiation pédagogique au Fâ et simulateur d'akplèkan |
 | `jours.html` + `assets/jours.js` + `assets/jours.css` | Outil « Jours verts et rouges » : calendrier décisionnel du mois (Lune × Soleil, phases lunaires, Mercure rétrograde) |
 | `journal.html` + `assets/journal.js` + `assets/journal.css` | Outil « Journal d'humeur » : note ton humeur (1–5), corrélations avec Lune/phases/Mercure, sauvegarde MySQL par jeton anonyme |
+| `compatibilite.html` + `assets/compat.js` + `assets/compat.css` | Outil « Compatibilité narrative » : deux naissances → prénoms du jour, signes solaires, aspect raconté, forces et frottements — zéro pourcentage, tout dans le navigateur |
+| `assets/prenoms.js` | Prénoms du jour (fon/adja + akan) et calendrier solaire approché, partagés par les outils |
 | `assets/astro.js` | Moteur astronomique partagé (Soleil, Lune, phases, Mercure rétrograde) utilisé par les outils |
-| `blog.html` + `blog/*.html` | 8 articles d'astrologie (contenu original) + index des articles |
+| `blog.html` + `blog/*.html` | 9 articles d'astrologie (contenu original) + index des articles |
 | `assets/ads.js` | Emplacements publicitaires Google AdSense (un seul réglage) |
 | `assets/blog.css` | Style des pages d'articles |
 | `ads.txt` / `robots.txt` / `sitemap.xml` | Fichiers exigés/utiles pour Google (AdSense et indexation) |

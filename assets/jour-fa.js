@@ -3,33 +3,9 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
 
-  /* Jours de la semaine — Sunday=0 to Saturday=6 (ordre JS).
-     Noms fon/adja (Bénin–Togo) et akan (Ghana), orthographes variables selon les régions.
-     Sens akan d'après la littérature sur les day names akan. */
-  const DAYS = [
-    { fr: "dimanche", h: "Kossi", hv: "Kossivi, Kossiwa", f: "Akossiwa", fv: "Akossi", ak: ["Kwasi", "Akosua"], sens: "associé à l\u2019univers" },
-    { fr: "lundi", h: "Kodjo", hv: "Kodjovi, Sedjro", f: "Adjoua", fv: "Adjo, Adjowa", ak: ["Kwadwo", "Adwoa"], sens: "associé à la paix" },
-    { fr: "mardi", h: "Komlan", hv: "Komlavi", f: "Abla", fv: "Ablavi, Abra", ak: ["Kwabena", "Abena"], sens: "associé à l\u2019océan" },
-    { fr: "mercredi", h: "Kokou", hv: "Kokouvi", f: "Akouavi", fv: "Akouwa, Akoué", ak: ["Kwaku", "Akua"], sens: "associé à l\u2019araignée (Anansé)" },
-    { fr: "jeudi", h: "Yaovi", hv: "Yao", f: "Yawa", fv: "Ayaba", ak: ["Yaw", "Yaa"], sens: "associé à la terre" },
-    { fr: "vendredi", h: "Kofi", hv: "Koffi, Kofiwa", f: "Afi", fv: "Afua", ak: ["Kofi", "Afua"], sens: "associé à la fertilité" },
-    { fr: "samedi", h: "Komi", hv: "Kouami", f: "Ama", fv: "Amu", ak: ["Kwame", "Ama"], sens: "associé à Dieu" }
-  ];
-
-  /* Signes solaires (zodiaque tropical, dates approchées) */
-  const ZOD = [
-    [3, 21, "Bélier"], [4, 20, "Taureau"], [5, 21, "Gémeaux"], [6, 21, "Cancer"],
-    [7, 23, "Lion"], [8, 23, "Vierge"], [9, 23, "Balance"], [10, 23, "Scorpion"],
-    [11, 22, "Sagittaire"], [12, 22, "Capricorne"], [1, 20, "Verseau"], [2, 19, "Poissons"]
-  ];
-  function zodiaque(m, d) {
-    let out = "Capricorne";
-    for (let i = ZOD.length - 1; i >= 0; i--) {
-      const [zm, zd, n] = ZOD[i];
-      if (m > zm || (m === zm && d >= zd)) { out = n; break; }
-    }
-    return out;
-  }
+  /* Prénoms du jour + zodiaque : module partagé assets/prenoms.js */
+  const DAYS = window.JOUR_PRENOMS;
+  const zodiaque = window.JOUR_ZODIAQUE;
 
   function renderRes(dd, sex, prenom) {
     const day = DAYS[dd.getDay()];
