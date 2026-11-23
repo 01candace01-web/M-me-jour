@@ -22,7 +22,8 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 | `data-defaults.js` / `defaults.php` | Valeurs par défaut (896 personnages, phrases, textes) si la base est vide |
 | `schema.sql` | Schéma MySQL (8 tables + phrases par défaut) |
 | `seed-characters.sql` | Seed optionnel des 896 personnages |
-| `install.php` | Crée la base et les tables automatiquement, puis **à supprimer** |
+| `install.php` | Crée la base et les tables automatiquement (verrou `install.lock` après succès), puis **à supprimer** |
+| `.htaccess` | Sécurité Apache : liste des dossiers interdite, fichiers sensibles (`.sql`, `.md`, `.lock` …) inaccessibles, en-têtes de protection du navigateur |
 | `jour-fa.html` + `assets/jour-fa.js` + `assets/jour-fa.css` | Outil « Ton jour Fâ » : prénom du jour (fon/adja + akan), croisement signe solaire, initiation pédagogique au Fâ et simulateur d'akplèkan |
 | `jours.html` + `assets/jours.js` + `assets/jours.css` | Outil « Jours verts et rouges » : calendrier décisionnel du mois (Lune × Soleil, phases lunaires, Mercure rétrograde) + export .ics pour Google Agenda |
 | `journal.html` + `assets/journal.js` + `assets/journal.css` | Outil « Journal d'humeur » : note ton humeur (1–5), corrélations avec Lune/phases/Mercure, sauvegarde MySQL par jeton anonyme |
@@ -53,8 +54,9 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
    define('DB_USER', 'root');      // XAMPP : utilisateur root
    define('DB_PASS', '');          // XAMPP : mot de passe vide
    ```
-5. Ouvre **`http://localhost/memejour/install.php`** → « Installation terminée ». **Supprime ensuite `install.php`.**
-   (Mise à jour : `install.php` peut être relancé sans risque à chaque nouvelle version — il ne crée que les tables manquantes, comme `journal`. Supprime-le ensuite de nouveau.)
+5. Ouvre **`http://localhost/memejour/install.php`** → « Installation terminée ».
+   L'installation pose un verrou (`install.lock`) : on ne peut pas la relancer par erreur. **Supprime ensuite `install.php`.**
+   (Mise à jour du site : si une nouvelle version ajoute des tables, supprime `install.lock`, relance `install.php` une fois — il ne crée que les tables manquantes — puis supprime `install.php` et `install.lock` de nouveau.)
 6. Le site : **`http://localhost/memejour/`**. Admin : `http://localhost/memejour/admin.html`.
 
 ⚠️ Toujours ouvrir via `http://localhost/...` — jamais en double-cliquant le fichier HTML dans l'Explorateur.
@@ -108,4 +110,4 @@ Si la table `commandes` n'existe pas (base installée avant l'ajout), réexécut
 - **Chat par jour de naissance** : public, sans liens, pseudos réservés interdits, messages signalables.
 - **Back-office** : stats par signe et par jour, inscrits + export CSV, CRUD personnages/phrases/textes, masquage/suppression de messages.
 - **Anti-spam** : validations serveur + limites par empreinte d'IP (`md5(IP + secret)`), jamais l'IP elle-même ; empreintes effacées après 24 h.
-- **Sécurité** : sessions admin (cookie HttpOnly / SameSite=Lax, limite de tentatives), jeton CSRF sur les mutations, requêtes préparées, échappement HTML.
+- **Sécurité** : sessions admin (cookie HttpOnly / SameSite=Lax/secure, limite de tentatives + temporisation), jeton CSRF sur les mutations, requêtes préparées, échappement HTML, export CSV neutralisé (pas d'injection de formule dans Excel/Sheets), webhook de paiement refusé tant que la phrase secrète n'est pas changée, installation verrouillée, `.htaccess` de protection.

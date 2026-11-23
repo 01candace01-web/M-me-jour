@@ -16,6 +16,14 @@ require_once __DIR__ . '/db.php';
 
 header('Content-Type: text/plain; charset=utf-8');
 
+/* garde-fou : le secret par defaut est public (il est dans le depot), on ne
+   doit donc JAMAIS faire confiance a un webhook tant que config.php n'a pas
+   ete personnalise */
+if (FEDA_WEBHOOK_SECRET === '' || FEDA_WEBHOOK_SECRET === 'CHANGE_ME_phrase_secrete_du_webhook_fedapay') {
+    http_response_code(500);
+    exit('Webhook non configuré : change FEDA_WEBHOOK_SECRET dans config.php.');
+}
+
 /* 1. la phrase secrète dans l'URL doit être la bonne (le webhook FedaPay est public) */
 $secret = (string)($_GET['secret'] ?? '');
 if (!hash_equals(FEDA_WEBHOOK_SECRET, $secret)) {

@@ -35,6 +35,15 @@ function require_admin(): void
     }
 }
 
+/* Cookies de session durcis : le cookie n'est pas lisible en JavaScript
+   (httponly), ne traverse pas les sites tiers (samesite) et n'est
+   envoyé qu'en HTTPS dès que le site en a un (secure). */
+session_set_cookie_params([
+    'httponly' => true,
+    'samesite' => 'Lax',
+    'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+    'path'     => '/',
+]);
 session_start();
 
 if (!isset($_SESSION['csrf'])) {
@@ -129,6 +138,9 @@ case 'login': {
     }
     $_SESSION['fails']++;
     $_SESSION['last_try'] = time();
+    /* petite pause aleatoire : rend les tentatives de mot de passe par
+       force brute beaucoup plus lentes, sans toucher a la base */
+    usleep(random_int(200000, 600000));
     json_out(['ok' => false, 'error' => 'Identifiants incorrects.']);
 }
 
@@ -354,8 +366,12 @@ case 'admin_subscribers_export': {
     header('Content-Disposition: attachment; filename="inscrits.csv"');
     echo "\ufeffDate;E-mail;WhatsApp;Naissance;Signe\n";
     $st = $pdo->query('SELECT created_at, email, whatsapp, birth_date, signe FROM subscribers ORDER BY created_at DESC');
+    /* une cellule qui commence par = + - @ pourrait être exécutée comme une
+       formule par Excel ou Google Sheets : on la neutralise avec une
+       apostrophe devant */
+    $csv_cell = fn($v) => '"' . str_replace('"', '""', preg_match('/^[=+@\\-]/', (string)$v) ? "'" . (string)$v : (string)$v) . '"';
     while ($r = $st->fetch(PDO::FETCH_NUM)) {
-        echo implode(';', array_map(fn($v) => '"' . str_replace('"', '""', (string)$v) . '"', $r)), "\n";
+        echo implode(';', array_map($csv_cell, $r)), "\n";
     }
     exit;
 }

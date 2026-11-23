@@ -9,6 +9,22 @@ require_once __DIR__ . '/config.php';
 
 header('Content-Type: text/plain; charset=utf-8');
 
+/* garde-fou 1 : on n'installe qu'une fois. Re-executer ce fichier recree
+   des doublons de phrases et expose la page a des abus. */
+if (is_file(__DIR__ . '/install.lock')) {
+    http_response_code(403);
+    exit("Déjà installé : le fichier install.lock existe.\n"
+         . "Pour relancer l'installation, supprime install.lock (et ensuite install.php).\n");
+}
+
+/* garde-fou 2 : DB_NAME passe dans du SQL brut, on exige des caracteres
+   surs (lettres, chiffres, underscore) : pas d'accents, pas d'espaces. */
+if (!preg_match('/^[A-Za-z0-9_]+$/', DB_NAME)) {
+    http_response_code(500);
+    echo "DB_NAME invalide dans config.php : utilise uniquement des lettres, des chiffres et _ (pas d'accents, pas d'espaces).\n";
+    exit(1);
+}
+
 $sql = file_get_contents(__DIR__ . '/schema.sql');
 
 $dsn = 'mysql:host=' . DB_HOST . ';charset=utf8mb4';
@@ -38,9 +54,11 @@ foreach ($statements as $q) {
         echo "Erreur sur une requête : " . $e->getMessage() . "\n";
     }
 }
+/* on pose un verrou : la page ne pourra plus être relancée */
+file_put_contents(__DIR__ . '/install.lock', date('c'));
 echo "Installation terminée : les tables sont créées.\n";
 echo "AVANT DE METTRE EN LIGNE :\n";
 echo " 1. Change ADMIN_EMAIL, ADMIN_PASSWORD et IP_HASH_SECRET dans config.php.\n";
 echo " 2. Remplace TON-SITE.fr par ton domaine dans index.html, blog.html, blog/, sitemap.xml et robots.txt.\n";
-echo " 3. Supprime install.php de ton hébergement.\n";
+echo " 3. Supprime install.php ET install.lock de ton hébergement (le .htaccess bloque leur téléchargement, mais supprime-les quand même).\n";
 echo "Ensuite : https://ton-site.fr/index.html (site), /blog.html (articles) et /admin.html (administration).\n";

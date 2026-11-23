@@ -1,0 +1,28 @@
+# ============ Sécurité du site Même Jour (Apache / XAMPP) ============
+
+# 1. Interdire de lister le contenu des dossiers (ex. /assets/, /blog/)
+Options -Indexes
+
+# 2. Bloquer le téléchargement direct des fichiers sensibles :
+#    schema.sql, seed-characters.sql, README.md, install.lock, etc.
+#    (les .txt comme ads.txt et robots.txt restent bien servis : ils sont publics)
+<FilesMatch "\.(sql|md|lock|ini|cjs|log|bak|swp)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 3. En-têtes HTTP de protection du navigateur (si mod_headers est actif) :
+#    - no-sniff      : le navigateur ne devine pas le type des fichiers
+#    - X-Frame-Options : le site ne peut pas être caché dans une iframe
+#      d'un autre site (protection contre le "clickjacking")
+#    - Referrer-Policy : les liens sortants ne fuient pas les URL internes
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
