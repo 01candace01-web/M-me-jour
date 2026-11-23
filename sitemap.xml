@@ -10,5 +10,7 @@
   <url><loc>https://TON-SITE.fr/blog/histoire-de-lastrologie.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://TON-SITE.fr/jour-fa.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://TON-SITE.fr/blog/jour-fa-vodun-benin.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/jours.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/jours-verts-rouges.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://TON-SITE.fr/confidentialite.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

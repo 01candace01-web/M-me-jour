@@ -1,0 +1,28 @@
+/* Page Jours verts et rouges */
+.leg{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 14px}
+.chip{font-size:.85rem;font-weight:600;border-radius:999px;padding:6px 12px;border:1px solid var(--line)}
+.chip.g{color:#59d98c;background:rgba(89,217,140,.10)}
+.chip.o{color:#ffc46b;background:rgba(255,196,107,.10)}
+.chip.r{color:#ff7a7a;background:rgba(255,122,122,.10)}
+
+#cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:0 0 8px}
+#cal .dow{color:var(--mut);font-size:.8rem;font-weight:600;text-align:center;padding:4px 0}
+.day{position:relative;min-height:58px;border-radius:10px;border:1px solid var(--line);padding:6px 7px;font-size:.9rem;cursor:default}
+.day .num{font-weight:600}
+.day .mk{position:absolute;top:5px;right:6px;font-size:.75rem}
+.day .tag{display:block;margin-top:6px;font-size:.68rem;line-height:1.25;color:var(--tx)}
+.day.g{background:rgba(89,217,140,.10);border-color:rgba(89,217,140,.45)}
+.day.o{background:rgba(255,196,107,.08)}
+.day.r{background:rgba(255,122,122,.09);border-color:rgba(255,122,122,.40)}
+.day.rx.r{border-style:dashed}
+.day.today{box-shadow:0 0 0 2px var(--gold) inset}
+
+.plist{display:grid;gap:8px}
+.plist li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.plist .why{color:var(--mut);font-size:.9rem}
+
+@media(max-width:520px){
+  #cal{gap:4px}
+  .day{min-height:50px;padding:4px 5px}
+  .day .tag{display:none}
+}

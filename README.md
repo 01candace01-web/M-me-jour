@@ -24,7 +24,8 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 | `seed-characters.sql` | Seed optionnel des 896 personnages |
 | `install.php` | Crée la base et les tables automatiquement, puis **à supprimer** |
 | `jour-fa.html` + `assets/jour-fa.js` + `assets/jour-fa.css` | Outil « Ton jour Fâ » : prénom du jour (fon/adja + akan), croisement signe solaire, initiation pédagogique au Fâ et simulateur d'akplèkan |
-| `blog.html` + `blog/*.html` | 6 articles d'astrologie (contenu original) + index des articles |
+| `jours.html` + `assets/jours.js` + `assets/jours.css` | Outil « Jours verts et rouges » : calendrier décisionnel du mois (Lune × Soleil, phases lunaires, Mercure rétrograde) |
+| `blog.html` + `blog/*.html` | 7 articles d'astrologie (contenu original) + index des articles |
 | `assets/ads.js` | Emplacements publicitaires Google AdSense (un seul réglage) |
 | `assets/blog.css` | Style des pages d'articles |
 | `ads.txt` / `robots.txt` / `sitemap.xml` | Fichiers exigés/utiles pour Google (AdSense et indexation) |
