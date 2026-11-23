@@ -23,7 +23,8 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 | `schema.sql` | Schéma MySQL (7 tables + phrases par défaut) |
 | `seed-characters.sql` | Seed optionnel des 896 personnages |
 | `install.php` | Crée la base et les tables automatiquement, puis **à supprimer** |
-| `blog.html` + `blog/*.html` | 5 articles d'astrologie (contenu original) + index des articles |
+| `jour-fa.html` + `assets/jour-fa.js` + `assets/jour-fa.css` | Outil « Ton jour Fâ » : prénom du jour (fon/adja + akan), croisement signe solaire, initiation pédagogique au Fâ et simulateur d'akplèkan |
+| `blog.html` + `blog/*.html` | 6 articles d'astrologie (contenu original) + index des articles |
 | `assets/ads.js` | Emplacements publicitaires Google AdSense (un seul réglage) |
 | `assets/blog.css` | Style des pages d'articles |
 | `ads.txt` / `robots.txt` / `sitemap.xml` | Fichiers exigés/utiles pour Google (AdSense et indexation) |
