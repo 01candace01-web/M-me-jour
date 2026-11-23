@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ta carte du ciel en 3D, à faire tourner | Même Jour</title>
+<meta name="description" content="Fais tourner ta carte du ciel comme un globe : les 12 signes forment l'anneau écliptique, les planètes sont posées dessus, les aspects sont reliés en traits colorés. Drag, zoom, tout dans ton navigateur.">
+<meta name="theme-color" content="#1c1a38">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✨%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- Remplace https://TON-SITE.fr par l'adresse réelle de ton site (garde le / final) -->
+<link rel="canonical" href="https://TON-SITE.fr/carte3d.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Ta carte du ciel en 3D, à faire tourner">
+<meta property="og:description" content="Les 12 signes en anneau, les planètes posées dessus, les aspects en traits colorés : fais tourner ta carte du ciel et comprends-la d'un coup d'œil.">
+<meta property="og:url" content="https://TON-SITE.fr/carte3d.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/blog.css">
+<link rel="stylesheet" href="assets/viz.css">
+</head>
+<body>
+<main class="art">
+<nav class="crumb"><a href="index.html">Accueil</a> › <span>Carte du ciel 3D</span></nav>
+<article>
+<h1>Ta carte du ciel, en 3D</h1>
+<p class="meta">Anneau écliptique tournant · aspects colorés · dessinée dans ton navigateur</p>
+
+<p>La plupart des cartes du ciel sont des cercles plats, truffés de symboles. Ici, tu fais tourner ton thème comme un globe : <b>les 12 signes forment l'anneau du zodiaque</b>, les planètes sont posées dessus à leur vraie place, et les <b>aspects</b> (harmonies et tensions entre planètes) sont reliés par des traits colorés. Attrape la carte à la souris ou au doigt pour l'incliner, zoome, repasse en vue de face.</p>
+
+<div class="note">Tout est calculé et dessiné dans ta page : le moteur du site (positions planétaires réelles) tourne dans ton navigateur, rien n'est envoyé au serveur. C'est de la géométrie, pas de la magie.</div>
+
+<form id="cf3">
+ <div class="row">
+  <label>Date de naissance
+   <input type="date" id="bd3" required>
+  </label>
+  <label>Heure de naissance <small>facultative, pour l'ascendant</small>
+   <input type="time" id="bh3">
+  </label>
+ </div>
+ <button type="submit">Dessiner ma carte</button>
+</form>
+<p id="c3m" role="status"></p>
+
+<div id="c3res" class="hid">
+ <div class="vidbox">
+  <canvas id="c3" width="960" height="620" aria-label="Carte du ciel en 3D, tournante"></canvas>
+ </div>
+ <div class="vbar">
+  <button type="button" id="zplus">＋ zoom</button>
+  <button type="button" id="zmoins" class="alt">－ zoom</button>
+  <button type="button" id="vue3" class="alt">vue 3D / vue de face</button>
+  <span class="sub" id="c3aide">Fais glisser la carte pour la tourner.</span>
+ </div>
+</div>
+
+<section class="adwrap"><div class="ad-slot"></div></section>
+
+<h2>Ta lecture rapide</h2>
+<ul id="c3liste" class="plist"></ul>
+
+<section>
+ <h2>Comment lire les traits</h2>
+ <ul>
+  <li><b>△ trait doré (trine)</b> : deux planètes du même élément — l'énergie passe sans frottement.</li>
+  <li><b>✶ trait vert (sextile)</b> : deux éléments voisins — une occasion qui demande un petit effort.</li>
+  <li><b>□ trait rouge (carré)</b> : une tension — inconfortable, mais c'est là qu'on progresse.</li>
+  <li><b>☍ trait bleu (opposition)</b> : deux planètes face à face — un balancier à équilibrer.</li>
+ </ul>
+ <p class="note">⚠️ Honnêteté : les positions sont calculées par les formules du site (précision d'environ 1°, largement suffisante pour repérer un signe et les yeux des aspects), l'ascendant est approximatif et les maisons ne sont pas dessinées. Pour un thème d'astrologue complet, va voir un spécialiste — pour comprendre <b>comment ton ciel est construit</b>, tu es au bon endroit.</p>
+</section>
+<section class="rel">
+ <h2>En savoir plus</h2>
+ <div class="cards">
+  <a class="card" href="blog/theme-video-3d.html"><b>Ton thème en vidéo et en 3D</b><span>Pourquoi une image qu'on fait tourner s'ancre mieux qu'une liste.</span></a>
+  <a class="card" href="theme-video.html"><b>Ton thème astral en vidéo</b><span>La même naissance, racontée en une vidéo de 30 secondes.</span></a>
+  <a class="card" href="blog/lire-son-theme-astral.html"><b>Comment lire son thème astral</b><span>Le guide du débutant, étape par étape.</span></a>
+ </div>
+</section>
+</article>
+<footer class="foot"><a href="index.html">Retour au site</a> · <a href="blog.html">Tous les articles</a> · <a href="confidentialite.html">Confidentialité et mentions légales</a></footer>
+</main>
+<script src="assets/ads.js"></script>
+<script src="assets/astro.js"></script>
+<script src="assets/carte3d.js"></script>
+</body>
+</html>

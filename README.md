@@ -29,8 +29,12 @@ Reconstruction du site « Même Jour » (calculs astro/nombre, chat par date, in
 | `compatibilite.html` + `assets/compat.js` + `assets/compat.css` | Outil « Compatibilité narrative » : deux naissances → prénoms du jour, signes solaires, aspect raconté, forces et frottements — zéro pourcentage, tout dans le navigateur |
 | `assets/prenoms.js` | Prénoms du jour (fon/adja + akan) et calendrier solaire approché, partagés par les outils |
 | `maintenant.html` + `assets/maintenant.js` + `assets/maintenant.css` | Outil « Le ciel en direct » : positions planétaires en temps réel (Soleil → Saturne), aspects avec le Soleil natal, horizon local (géolocalisation facultative), notifications du ciel, inscription au rappel e-mail |
+| `coach.html` + `assets/coach.js` | Outil « Ton coach de thème » : moteur de règles local qui croise ta question (fatigue, argent, travail, amour…), ton thème natal et le ciel du moment — sans envoi au serveur |
+| `theme-video.html` + `assets/theme-video.js` | Outil « Ton thème en vidéo » : une vidéo animée d'environ 30 secondes (Soleil, Lune, ascendant, Vénus, Mars…) dessinée en canvas et téléchargeable en .webm |
+| `carte3d.html` + `assets/carte3d.js` | Outil « Ta carte du ciel en 3D » : anneau écliptique que l'on fait tourner (glisser/zoomer), 12 signes, planètes, aspects colorés et ascendant — projection maison en canvas |
+| `assets/viz.css` | Styles partagés des pages interactives (coach, vidéo, 3D) |
 | `cron-quotidien.php` + `rappels.php` | Envoi du rappel quotidien par e-mail (à appeler 1×/jour par cron ou Planificateur de tâches) |
-| `blog.html` + `blog/*.html` | 10 articles d'astrologie (contenu original) + index des articles |
+| `blog.html` + `blog/*.html` | 12 articles d'astrologie (contenu original) + index des articles |
 | `assets/ads.js` | Emplacements publicitaires Google AdSense (un seul réglage) |
 | `assets/blog.css` | Style des pages d'articles |
 | `ads.txt` / `robots.txt` / `sitemap.xml` | Fichiers exigés/utiles pour Google (AdSense et indexation) |

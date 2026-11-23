@@ -18,5 +18,10 @@
   <url><loc>https://TON-SITE.fr/blog/compatibilite-narrative.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://TON-SITE.fr/maintenant.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://TON-SITE.fr/blog/ciel-en-direct.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/coach.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/coach-questions.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/theme-video.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/carte3d.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/theme-video-3d.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://TON-SITE.fr/confidentialite.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>
