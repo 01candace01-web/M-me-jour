@@ -13,6 +13,15 @@ let SITE_PHRASES=DEF_PHRASES;
 const TEXTS=Object.assign({},DEF_TEXTS);
 let CHAT_ON=false,WHATSAPP="";
 const API="api.php";
+/* détection du mode « fichier ouvert en double-cliquant » : dans ce mode
+   le navigateur bloque toute communication avec le serveur, on prévient
+   tout de suite au lieu de laisser la page sembler bloquée */
+if(location.protocol==="file:"&&document.body){
+ const avis=document.createElement("div");
+ avis.style.cssText="background:#b3261e;color:#fff;padding:12px 16px;font:bold 15px sans-serif;text-align:center;font-family:inherit";
+ avis.textContent="Ce fichier a été ouvert en double-cliquant : le site ne peut pas fonctionner ainsi. Copie le dossier dans C:\\xampp\\htdocs\\memejour puis ouvre http://localhost/memejour/ dans le navigateur.";
+ document.body.insertBefore(avis,document.body.firstChild);
+}
 const ready=fetch(API+"?action=bootstrap").then(r=>r.json()).then(j=>{
  if(Array.isArray(j.characters)&&j.characters.length) CHARACTERS=j.characters;
  if(j.phrases) for(const k of Object.keys(SITE_PHRASES)) if(Array.isArray(j.phrases[k])&&j.phrases[k].length) SITE_PHRASES[k]=j.phrases[k];
