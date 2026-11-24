@@ -107,12 +107,17 @@ function villains(m,d){
   if(r) add("Le plus proche",r.c[0]+" ("+r.c[1]+"), antagoniste né le "+(+r.c[2].slice(3))+" "+MONTHS[+r.c[2].slice(0,2)-1]+", à "+r.g+" jour"+(r.g>1?"s":"")+" d'écart.",true);
  }
 }
+/* toute requête réseau est abandonnée après 8 secondes : la page ne peut
+   plus rester bloquée sur « Calcul en cours… » si Internet répond mal */
+function avecDelai(p,ms){
+ return Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error("delai depassé")),ms||8000))]);
+}
 async function geocode(name){
- const r=await fetch("https://geocoding-api.open-meteo.com/v1/search?count=1&language=fr&name="+encodeURIComponent(name));
+ const r=await avecDelai(fetch("https://geocoding-api.open-meteo.com/v1/search?count=1&language=fr&name="+encodeURIComponent(name)));
  const j=await r.json();return j.results&&j.results[0];
 }
 async function history(y,m,d){
- const r=await fetch("https://api.wikimedia.org/feed/v1/wikipedia/fr/onthisday/all/"+pad(m)+"/"+pad(d));
+ const r=await avecDelai(fetch("https://api.wikimedia.org/feed/v1/wikipedia/fr/onthisday/all/"+pad(m)+"/"+pad(d)));
  if(!r.ok) throw new Error("wiki");
  return r.json();
 }
@@ -255,6 +260,7 @@ $("f").addEventListener("submit",async ev=>{
  const auto=autoRun;autoRun=false;
  const time=$("time").value,place=$("place").value.trim(),msg=$("msg");
  $("go").disabled=true;msg.textContent="Calcul en cours…";
+ try{
  const wd=DAYS[new Date(Date.UTC(y,m-1,d,12)).getUTCDay()];
  let h=12,mi=0,tz=null,lat=null,lon=null,placeName="",asc="Non calculé (heure et ville nécessaires)";
  if(time){[h,mi]=time.split(":").map(Number)}
@@ -301,7 +307,10 @@ $("f").addEventListener("submit",async ev=>{
   notes.push("Impossible de charger l'histoire du jour : vérifie ta connexion, puis réessaie.");
   ["yearEv","births","events"].forEach(i=>$(i).replaceChildren());
  }
- msg.textContent=notes.join(" ");
+  msg.textContent=notes.join(" ");
+ }catch(e){
+  msg.textContent="Calcul interrompu : vérifie ta connexion Internet et réessaie. (Si tu as ouvert cette page en double-cliquant le fichier, passe plutôt par http://localhost/memejour/)";
+ }
  $("go").disabled=false;
  if(!auto)$("headline").scrollIntoView({behavior:"smooth",block:"start"});
 });
