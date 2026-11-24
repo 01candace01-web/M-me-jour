@@ -1,0 +1,7 @@
+/* Page Ciel en direct */
+.sky table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.sky th,.sky td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);font-size:.95rem}
+.sky th{color:var(--mut);font-weight:600}
+.sky tr:last-child td{border-bottom:none}
+.sky .rx{color:#d0803a;font-weight:600}
+#horizonListe li,#natalListe li{line-height:1.55;margin:0 0 8px}

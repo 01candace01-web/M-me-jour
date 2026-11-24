@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ton jour Fâ : prénom du jour, tradition vodun et signe solaire | Même Jour</title>
+<meta name="description" content="Découvre ton prénom du jour de naissance (tradition fon/adja du Bénin), les sens traditionnels, le Fâ, le kpoli et le bokonon — un outil pédagogique, respectueux de la tradition.">
+<meta name="theme-color" content="#1c1a38">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✨%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- Remplace https://TON-SITE.fr par l'adresse réelle de ton site (garde le / final) -->
+<link rel="canonical" href="https://TON-SITE.fr/jour-fa.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Ton jour Fâ : prénom du jour et tradition vodun">
+<meta property="og:description" content="Ton jour de naissance à la béninoise : prénom du jour, tradition vodun, initiation au Fâ.">
+<meta property="og:url" content="https://TON-SITE.fr/jour-fa.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/blog.css">
+<link rel="stylesheet" href="assets/jour-fa.css">
+</head>
+<body>
+<main class="art">
+<nav class="crumb"><a href="index.html">Accueil</a> › <span>Ton jour Fâ</span></nav>
+<article>
+<h1>Ton jour de naissance à la béninoise</h1>
+<p class="meta">Prénom du jour (tradition fon/adja) · sens traditionnels · initiation au Fâ</p>
+
+<p>Kossi, Yao, Abla… Dans le sud du Bénin, au Togo et au Ghana, l'enfant reçoit un <b>prénom selon le jour de la semaine où il est né</b>. Cette page te dit quel « jour » tu es, croise ton prénom du jour avec ton <a href="blog/lire-son-theme-astral.html">signe solaire</a> du zodiaque, et t'initie aux bases du <b>Fâ</b>, la grande divination fon classée au patrimoine de l'UNESCO.</p>
+
+<form id="fafa">
+ <div class="row">
+  <label>Date de naissance
+   <input type="date" id="d" required>
+  </label>
+  <label>Tu es
+   <select id="s"><option value="h">Un homme</option><option value="f">Une femme</option></select>
+  </label>
+ </div>
+ <label>Prénom <small>facultatif, pour te montrer à ton propre « nom de semaine »</small>
+  <input type="text" id="p" maxlength="40" autocomplete="off" placeholder="Ton prénom…">
+ </label>
+ <button type="submit">Révéler mon jour africain</button>
+</form>
+<p id="m" role="status"></p>
+
+<div id="res" class="hid">
+ <section>
+  <h2>Ton prénom du jour</h2>
+  <p class="big" id="dnName"></p>
+  <p class="sub" id="dnLine"></p>
+  <dl id="dnFacts"></dl>
+  <p id="dnSelf"></p>
+ </section>
+ <section>
+  <h2>Les sept jours</h2>
+  <p class="sub">Noms fon/adja (Bénin–Togo) et akan (Ghana). Les orthographes varient selon les régions et les familles.</p>
+  <div class="tablewrap"><table id="tbl">
+   <thead><tr><th>Jour</th><th>Fon / adja (H · F)</th><th>Akan H · F</th><th>Sens akan traditionnel</th></tr></thead>
+   <tbody></tbody>
+  </table></div>
+ </section>
+ <section>
+  <h2>Fais connaissance avec ton zodiaque</h2>
+  <p class="sub" id="znLine"></p>
+  <p class="note">Les dates de changement de signe varient d'un jour selon les années ; si tu es né·e autour du 20–23 du mois, vérifie avec ton heure exacte sur la <a href="index.html">page d'accueil</a>.</p>
+ </section>
+ <section class="adwrap"><div class="ad-slot"></div></section>
+ <section>
+  <h2>Fais connaissance avec le Fâ</h2>
+  <p>Dans la tradition fon, le <b>fa</b> (Fá) est la parole par laquelle Mawu, le Créateur, communique à chacun sa destinée. Naître avec un signe — son <b>kpoli fa</b> ou <b>du</b> — détermine ses forces et ses interdits. Le signe apparaît au cours d'une consultation par un <b>bokonon</b>, le devin initié, qui jette le chapelet divinatoire, l'<b>akplèkan</b>, ou manie les noix de palme sacrées, les <b>fadèkwin</b>.</p>
+  <ul>
+   <li><b>Un système binaire</b> : chaque position du chapelet donne un trait simple ou double. Quatre positions par colonne, deux colonnes : 2⁴ × 2⁴ = <b>256 figures</b> (les 16 signes-mères, ou « meji », et leurs 240 combinaisons, les « douvi »).</li>
+   <li><b>Les 16 signes-mères</b> (noms yoruba standards) : Eji-Ogbe, Oyeku, Iwori, Odi, Irosun, Owonrin, Obara, Okanran, Ogunda, Osa, Ika, Oturupọn, Otura, Irete, Ose, Ofun. Chez les fon, on les nomme par exemple Gbe-Meji, Yeku-Meji, Woli-Meji, Di-Meji, Loso-Meji…</li>
+   <li><b>Une bibliothèque orale</b> : chaque figure ouvre sur des récits, proverbes, plantes et prescriptions transmis de maître à disciple depuis des siècles. La tradition yoruba du ifá a été proclamée <b>patrimoine culturel immatériel de l'humanité par l'UNESCO</b> (2005, puis liste représentative en 2008).</li>
+   <li><b>L'interdit précède l'action</b> : au royaume du Danxomè, aucune grande décision (guerre, succession, fondation) ne se prenait sans consulter le fa.</li>
+  </ul>
+ </section>
+ <section class="try">
+  <h2>Simulateur du chapelet (akplèkan)</h2>
+  <p class="sub">Pour comprendre la mécanique : appuie sur le bouton pour « jeter » un chapelet symbolique. Retiens bien : une vraie consultation du Fâ se fait auprès d'un bokonon — cette simulation n'est qu'un jeu de découverte.</p>
+  <div class="chainbox"><div id="c1" class="chain"></div><div id="c2" class="chain"></div></div>
+  <p class="big" id="cdName"></p>
+  <p class="sub" id="cdSub"></p>
+  <button type="button" id="throw">Jeter le chapelet</button>
+ </section>
+ <section class="rel">
+  <h2>En savoir plus</h2>
+  <div class="cards">
+   <a class="card" href="blog/jour-fa-vodun-benin.html"><b>Prénoms du jour, Vodun et Fâ au Bénin</b><span>L'article détaillé : la tradition des prénoms, le panthéon vodun et l'oracle du Fâ, sources à l'appui.</span></a>
+   <a class="card" href="blog/lire-son-theme-astral.html"><b>Comment lire son thème astral</b><span>Le guide du débutant côté zodiaque occidental.</span></a>
+  </div>
+ </section>
+</div>
+</article>
+<footer class="foot"><a href="index.html">Retour au site</a> · <a href="blog.html">Tous les articles</a> · <a href="confidentialite.html">Confidentialité et mentions légales</a></footer>
+</main>
+<script src="assets/ads.js"></script>
+<script src="assets/prenoms.js"></script>
+<script src="assets/jour-fa.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Administration | Même Jour</title>
+<link rel="stylesheet" href="assets/admin.css">
+</head>
+<body>
+<main>
+<h1>Administration de Même Jour</h1>
+
+<form id="login" class="card" style="max-width:420px">
+ <label>E-mail <input type="email" id="email" required autocomplete="username"></label>
+ <label>Mot de passe <input type="password" id="pwd" required autocomplete="current-password"></label>
+ <button type="submit">Se connecter</button>
+ <p id="lmsg" class="err"></p>
+</form>
+
+<div id="app" class="hid">
+ <div class="tabs" id="tabs"></div>
+ <p id="msg" role="status" class="mut"></p>
+ <div id="view"></div>
+ <p><button class="alt" id="out" type="button">Se déconnecter</button></p>
+</div>
+</main>
+
+<script src="assets/admin.js"></script>
+</body>
+</html>

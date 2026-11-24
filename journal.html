@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journal d'humeur : note ton jour, découvre tes motifs | Même Jour</title>
+<meta name="description" content="Note ton humeur chaque jour en 10 secondes. Ton journal croise ton humeur avec la Lune, les phases, Mercure rétrograde et ton signe solaire — et montre tes vrais motifs.">
+<meta name="theme-color" content="#1c1a38">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✨%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- Remplace https://TON-SITE.fr par l'adresse réelle de ton site (garde le / final) -->
+<link rel="canonical" href="https://TON-SITE.fr/journal.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Journal d'humeur : note ton jour, découvre tes motifs">
+<meta property="og:description" content="Ton humeur croisée avec la Lune, les phases lunaires et Mercure rétrograde. Anonyme, 10 secondes par jour.">
+<meta property="og:url" content="https://TON-SITE.fr/journal.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/blog.css">
+<link rel="stylesheet" href="assets/journal.css">
+</head>
+<body>
+<main class="art">
+<nav class="crumb"><a href="index.html">Accueil</a> › <span>Journal d'humeur</span></nav>
+<article>
+<h1>Ton journal d'humeur</h1>
+<p class="meta">Astro + vraie vie · Lune et phases · tes motifs personnels</p>
+
+<p>Tu te sens fatigué·e « sans raison » ? Excellente humeur plusieurs jours de suite ? Note ton humeur chaque soir en <b>10 secondes</b> : ton journal le croisera avec le <b>signe de la Lune</b>, les <b>phases lunaires</b>, <b>Mercure rétrograde</b> et ton signe solaire — et au bout de quelques semaines, il te montrera <b>tes vrais motifs</b>, à toi.</p>
+<p class="note">Sans compte à créer : un jeton anonyme est gardé dans ton navigateur. Ton journal est lié à cet appareil (pense à sauvegarder tes textes si tu changes d'ordinateur).</p>
+
+<section class="profil">
+ <label>Ma date de naissance <small>facultatif — sert à croiser ta Lune avec ton signe solaire</small>
+  <input type="date" id="bd">
+ </label>
+</section>
+
+<form id="jform">
+ <label>Jour
+  <input type="date" id="jdate" required>
+ </label>
+ <div id="moody" class="moody" role="radiogroup" aria-label="Humeur du jour"></div>
+ <label>Note du jour <small>facultatif, 280 caractères</small>
+  <textarea id="jnote" maxlength="280" rows="2" placeholder="Ex : grosse dispute au boulot, mal dormi…"></textarea>
+ </label>
+ <button type="submit">Enregistrer mon jour</button>
+</form>
+<p id="m" role="status"></p>
+<p id="dbWarn" class="note hid"></p>
+
+<div id="res" class="hid">
+ <section>
+  <h2>Tes entrées</h2>
+  <p class="sub" id="countLine"></p>
+  <ul id="list" class="plist"></ul>
+ </section>
+ <section>
+  <h2>Ce que ton journal dit de toi</h2>
+  <p class="sub" id="corrNote"></p>
+  <div id="corr"></div>
+ </section>
+ <section class="adwrap"><div class="ad-slot"></div></section>
+ <section>
+  <h2>Comment lire ça intelligemment</h2>
+  <ul>
+   <li><b>Corrélation n'est pas cause</b> : si tes jeudis sont gris, ça peut être la Lune… ou la réunion de 9 h. Le journal te montre des motifs d'abord <em>humains</em>.</li>
+   <li><b>Méfie-toi du biais de confirmation</b> : quand tu connais le signe du jour, tu peux « sentir » ce qu'on t'annonce. C'est exactement l'<a href="blog/effet-barnum-horoscope.html">effet Barnum</a>. Ton journal, lui, compare des <b>moyennes</b> sur beaucoup de jours : c'est plus solide qu'une impression.</li>
+   <li><b>N écrase pas quatre</b> : la machine ne remplace pas un médecin. Si ton humeur reste basse longtemps, parle-en à un professionnel de santé — le journal est un miroir, pas un diagnostic.</li>
+  </ul>
+ </section>
+ <section class="rel">
+  <h2>En savoir plus</h2>
+  <div class="cards">
+   <a class="card" href="blog/journal-humeur-lune.html"><b>Tenir un journal d'humeur (et y lire le ciel)</b><span>La méthode en 10 secondes par jour, et comment éviter les pièges des fausses corrélations.</span></a>
+   <a class="card" href="jours.html"><b>Jours verts et rouges</b><span>Ton calendrier décisionnel du mois : Lune, phases et Mercure rétrograde.</span></a>
+   <a class="card" href="jour-fa.html"><b>Ton jour Fâ</b><span>Ton prénom du jour de naissance et la grande divination du Bénin.</span></a>
+  </div>
+ </section>
+</div>
+</article>
+<footer class="foot"><a href="index.html">Retour au site</a> · <a href="blog.html">Tous les articles</a> · <a href="confidentialite.html">Confidentialité et mentions légales</a><span style="opacity:.55">· Version 22-11-2026 (calcul anti-blocage)</span></footer>
+</main>
+<script src="assets/ads.js"></script>
+<script src="assets/astro.js"></script>
+<script src="assets/journal.js"></script>
+</body>
+</html>

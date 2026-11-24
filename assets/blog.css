@@ -1,0 +1,27 @@
+/* Pages d'articles (blog) */
+.crumb{font-size:.9rem;color:var(--mut);margin:0 0 22px}
+.crumb a{color:var(--mut)}
+.crumb a:hover{color:var(--gold)}
+article{max-width:72ch}
+.meta{color:var(--mut);font-size:.9rem;margin:0 0 28px}
+article section{margin-top:30px}
+article p{margin:0 0 14px}
+article ul{gap:8px;margin:0 0 14px}
+article h2{margin:6px 0 10px;font-size:1.45rem}
+article b{color:var(--gold)}
+article a{color:var(--teal)}
+
+.cards{display:grid;gap:14px;margin:26px 0}
+.card{display:grid;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;text-decoration:none;color:var(--tx);transition:border-color .15s}
+.card:hover{border-color:var(--gold)}
+.card b{font:500 1.15rem/1.3 Fraunces,Georgia,serif;color:var(--gold)}
+.card span{color:var(--mut);font-size:.95rem}
+
+.rel{margin-top:40px}
+.rel .card{background:rgba(26,27,64,.55)}
+ul.flat li{border-left-color:var(--gold)}
+ul.flat a{color:var(--tx)}
+
+.adwrap{margin-top:36px}
+.ad-slot{margin:0;text-align:center;min-height:0}
+.ad-slot ins{width:100%}

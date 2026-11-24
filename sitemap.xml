@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Remplace https://TON-SITE.fr par l'adresse reelle de ton site (garde le / final). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://TON-SITE.fr/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://TON-SITE.fr/blog.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/lire-son-theme-astral.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/signe-solaire-lunaire-ascendant.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/elements-et-modalites.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/effet-barnum-horoscope.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/histoire-de-lastrologie.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/jour-fa.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/jour-fa-vodun-benin.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/jours.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/jours-verts-rouges.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/journal.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/journal-humeur-lune.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/compatibilite.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/compatibilite-narrative.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/maintenant.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/ciel-en-direct.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/coach.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/coach-questions.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/theme-video.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/carte3d.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/blog/theme-video-3d.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://TON-SITE.fr/premium.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://TON-SITE.fr/confidentialite.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

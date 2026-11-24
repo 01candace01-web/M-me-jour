@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ton thème astral en vidéo | Même Jour</title>
+<meta name="description" content="Plus le PDF de 20 pages : ton thème astral raconté en une courte vidéo animée, générée dans ton navigateur — Soleil, Lune, planètes, phases — et téléchargeable en .webm.">
+<meta name="theme-color" content="#1c1a38">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✨%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- Remplace https://TON-SITE.fr par l'adresse réelle de ton site (garde le / final) -->
+<link rel="canonical" href="https://TON-SITE.fr/theme-video.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Ton thème astral en vidéo">
+<meta property="og:description" content="Une vidéo courte et lisible de ton thème (Soleil, Lune, planètes), générée et téléchargeable depuis ton navigateur.">
+<meta property="og:url" content="https://TON-SITE.fr/theme-video.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/blog.css">
+<link rel="stylesheet" href="assets/viz.css">
+</head>
+<body>
+<main class="art">
+<nav class="crumb"><a href="index.html">Accueil</a> › <span>Thème en vidéo</span></nav>
+<article>
+<h1>Ton thème astral, en vidéo</h1>
+<p class="meta">Vidéo courte · scènes animées · export .webm · générée dans ton navigateur</p>
+
+<p>Le thème astral classique, c'est un PDF de vingt pages. Ici : tu donnes ta naissance, et tu regardes une <b>vidéo de ~30 secondes</b> qui raconte l'essentiel — ton Soleil, ta Lune, ton ascendant (si tu précises l'heure), ta Vénus et ton Mars, le fondu des scènes inclus. Tu peux la lire ici ou la <b>télécharger en .webm</b> pour la partager.</p>
+<p class="note">La vidéo est dessinée en direct dans ton navigateur (canvas) : aucun envoi au serveur. L'export vidéo peut être indisponible sur certains navigateurs — la lecture, elle, marche toujours.</p>
+
+<form id="vf">
+ <div class="row">
+  <label>Prénom <small>facultatif</small>
+   <input type="text" id="vnom" maxlength="30" autocomplete="off" placeholder="Ex : Abla">
+  </label>
+  <label>Date de naissance
+   <input type="date" id="vd" required>
+  </label>
+  <label>Heure <small>pour l'ascendant</small>
+   <input type="time" id="vh">
+  </label>
+ </div>
+ <button type="submit">Fabriquer ma vidéo</button>
+</form>
+<p id="vm" role="status"></p>
+
+<div id="vres" class="hid">
+ <div class="vidbox">
+  <canvas id="vc" width="960" height="540" aria-label="Animation du thème astral"></canvas>
+ </div>
+ <div class="vbar">
+  <button type="button" id="playBtn">▶ Lire</button>
+  <button type="button" id="recBtn" class="alt">⏺ Télécharger la vidéo (.webm)</button>
+  <span class="sub" id="vstatus"></span>
+ </div>
+</div>
+
+<section class="adwrap"><div class="ad-slot"></div></section>
+
+<section>
+ <h2>Ce que la vidéo montre (et ne montre pas)</h2>
+ <p>Chaque scène croise une position réelle calculée par le moteur du site (longitude du Soleil, de la Lune et des planètes). Elle donne le <b>fait</b> (le signe, l'élément), une <b>lecture courte</b>, et un rappel : la symbolique décrit des tendances. Ce n'est ni une prédiction, ni un diagnostic ; les maisons et les angles exacts demandent un thème complet.</p>
+ <p class="note">Pour aller plus loin : <a href="carte3d.html">ta carte du ciel en 3D</a> et l'article <a href="blog/lire-son-theme-astral.html">comment lire son thème astral</a>.</p>
+</section>
+<section class="rel">
+ <h2>En savoir plus</h2>
+ <div class="cards">
+  <a class="card" href="blog/theme-video-3d.html"><b>Ton thème en vidéo et en 3D</b><span>Pourquoi la vidéo et la carte tournante aident à retenir son thème.</span></a>
+  <a class="card" href="maintenant.html"><b>Le ciel en direct</b><span>Les positions du moment sur Même Jour.</span></a>
+ </div>
+</section>
+</article>
+<footer class="foot"><a href="index.html">Retour au site</a> · <a href="blog.html">Tous les articles</a> · <a href="confidentialite.html">Confidentialité et mentions légales</a></footer>
+</main>
+<script src="assets/ads.js"></script>
+<script src="assets/astro.js"></script>
+<script src="assets/theme-video.js"></script>
+</body>
+</html>

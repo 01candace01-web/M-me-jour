@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ton rapport de naissance complet | Même Jour</title>
+<meta name="description" content="La lecture complète que les sites gratuits ne donnent pas : ton Soleil, ta Lune, ton ascendant, Vénus, Mars, Jupiter, Saturne, tes aspects, tes mois favorables — paye par Mobile Money, ton rapport se débloque tout seul.">
+<meta name="theme-color" content="#1c1a38">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✨%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- Remplace https://TON-SITE.fr par l'adresse réelle de ton site (garde le / final) -->
+<link rel="canonical" href="https://TON-SITE.fr/premium.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Ton rapport de naissance complet">
+<meta property="og:description" content="Une lecture développée de ton thème astral : 7 planètes, tes aspects, tes jours et tes mois favorables. Paiement Mobile Money, déblocage immédiat.">
+<meta property="og:url" content="https://TON-SITE.fr/premium.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/blog.css">
+<link rel="stylesheet" href="assets/viz.css">
+</head>
+<body>
+<main class="art">
+<nav class="crumb"><a href="index.html">Accueil</a> › <span>Rapport complet</span></nav>
+<article>
+<h1>Ton rapport de naissance complet</h1>
+<p class="meta">Lecture développée · 7 planètes + tes aspects · débloqué juste après le paiement</p>
+
+<p>Les outils gratuits du site te donnent l'essentiel : ton prénom du jour, tes jours verts, une réponse à ta question. Le <b>rapport complet</b> va plus loin — c'est la lecture que rédige un astrologue devant toi, générée et expliquée par le moteur du site : l'histoire de chaque planète de ton thème, la liste de <b>tous tes aspects</b> avec leur lecture, puis tes <b>jours et tes mois favorables</b> de l'année qui vient. Tu le lis en ligne et tu peux l'imprimer en PDF.</p>
+
+<section class="adwrap"><div class="ad-slot"></div></section>
+
+<h2>Les offres</h2>
+<div class="cards" id="offres">
+ <!-- rempli par premium.js depuis l'API -->
+</div>
+<p id="omsg" role="status"></p>
+
+<div class="note" style="margin-top:12px">Paiement par <b>Mobile Money</b> (MTN MoMo, Moov, Wave…) via notre partenaire FedaPay. Le site ne voit jamais ton code secret : après le paiement, FedaPay prévient le site et <b>ton accès se débloque tout seul</b>, sans attendre personne. Déjà payé sur un autre appareil ? Entre ta référence ci-dessous pour retrouver ton accès.</div>
+
+<div id="retourRef">
+ <h2>Retrouver mon accès</h2>
+ <p class="sub">Entre la référence reçue au moment du paiement : 12 caractères, ex : <b>4F7A2B90C1D3</b>.</p>
+ <div class="vbar">
+  <input type="text" id="refIn" class="refin" maxlength="12" placeholder="Ex : 4F7A2B90C1D3" autocomplete="off">
+  <button type="button" id="refBtn">Vérifier ma référence</button>
+ </div>
+ <p id="refMsg" role="status"></p>
+</div>
+
+<section id="zoneAcces" class="hid">
+ <h2>🎉 Ton accès est débloqué</h2>
+ <p class="sub" id="accesInfo"></p>
+
+ <h3>Génère ton rapport</h3>
+ <form id="rf">
+  <div class="row">
+   <label>Date de naissance
+    <input type="date" id="rd" required>
+   </label>
+   <label>Heure de naissance <small>facultative, pour l'ascendant</small>
+    <input type="time" id="rh">
+   </label>
+  </div>
+  <button type="submit">Générer mon rapport complet</button>
+ </form>
+ <p id="rmsg" role="status"></p>
+
+ <div id="rapport" class="hid"></div>
+ <div class="vbar hid" id="rbtns">
+  <button type="button" id="printBtn">📄 Imprimer / enregistrer en PDF</button>
+ </div>
+</section>
+
+<section class="adwrap"><div class="ad-slot"></div></section>
+
+<section>
+ <h2>Honnêteté avant tout</h2>
+ <p>Le rapport est un <b>texte symbolique généré par les formules du site</b> : positions réelles des planètes (précision d'environ 1°), ascendant approximatif si tu donnes ton heure, maisons non calculées. Il décrit des tendances, il ne prédit rien — et il ne remplace ni un médecin, ni un conseiller. La lecture est pensée pour te donner du vocabulaire et des réflexes, pas des verdicts.</p>
+ <p class="note">Ton accès est valable depuis n'importe quel appareil tant que tu as ta référence : note-la ou garde le message de confirmation.</p>
+</section>
+<section class="rel">
+ <h2>En savoir plus</h2>
+ <div class="cards">
+  <a class="card" href="blog/lire-son-theme-astral.html"><b>Comment lire son thème astral</b><span>Les bases pour comprendre ton rapport en profondeur.</span></a>
+  <a class="card" href="coach.html"><b>Ton coach de thème</b><span>Pose tes questions, obtiens une réponse courte et gratuite.</span></a>
+  <a class="card" href="jours.html"><b>Jours verts et rouges</b><span>Le calendrier décisionnel du mois, offert.</span></a>
+ </div>
+</section>
+</article>
+<footer class="foot"><a href="index.html">Retour au site</a> · <a href="blog.html">Tous les articles</a> · <a href="confidentialite.html">Confidentialité et mentions légales</a><span style="opacity:.55">· Version 22-11-2026 (calcul anti-blocage)</span></footer>
+</main>
+<script src="assets/ads.js"></script>
+<script src="assets/astro.js"></script>
+<script src="assets/premium.js"></script>
+</body>
+</html>
