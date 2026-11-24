@@ -269,6 +269,8 @@ $("f").addEventListener("submit",async ev=>{
  const auto=autoRun;autoRun=false;
  const time=$("time").value,place=$("place").value.trim(),msg=$("msg");
  $("go").disabled=true;msg.textContent="Calcul en cours…";
+ /* vigie : si rien ne se passe au bout de 12 s, on prévient au lieu de rester figé */
+ const vigie=setTimeout(()=>{if(msg.textContent==="Calcul en cours…"){msg.textContent="Toujours en attente après 12 s : recharge avec Ctrl+F5, vérifie qu'Apache et MySQL sont démarrés dans XAMPP, puis réessaie.";$("go").disabled=false;}},12000);
  try{
  const wd=DAYS[new Date(Date.UTC(y,m-1,d,12)).getUTCDay()];
  let h=12,mi=0,tz=null,lat=null,lon=null,placeName="",asc="Non calculé (heure et ville nécessaires)";
@@ -321,6 +323,7 @@ $("f").addEventListener("submit",async ev=>{
   msg.textContent="Calcul interrompu : vérifie ta connexion Internet et réessaie. (Si tu as ouvert cette page en double-cliquant le fichier, passe plutôt par http://localhost/memejour/)";
  }
  $("go").disabled=false;
+ clearTimeout(vigie);
  if(!auto)$("headline").scrollIntoView({behavior:"smooth",block:"start"});
 });
 (()=>{
